@@ -1,0 +1,469 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Agente — Turnos & Métricas (MTD)</title>
+<style>
+:root{--bg:#05060a;--panel:#0b0f13;--edge:#161b21;--text:#e5e7eb;--mut:#9ca3af;--acc:#00e676;--acc2:#00c853;--bad:#ef4444;--ok:#22c55e}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(1200px 600px at 10% -10%, rgba(0,230,118,.08),transparent 60%),var(--bg);color:var(--text);font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial}
+.wrap{max-width:1120px;margin:0 auto;padding:28px}
+header{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:14px}
+h1{margin:0;font-size:22px;font-weight:900}
+.sub{color:var(--mut);font-size:12px}
+.tabs{display:flex;gap:8px;margin-bottom:12px}
+.tab{border:1px solid var(--edge);background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,0));color:#d1d5db;padding:10px 14px;border-radius:999px;cursor:pointer}
+.tab.on{border-color:rgba(0,230,118,.55);color:#eafff1;box-shadow:0 0 0 1px rgba(0,230,118,.25) inset}
+.card{background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,0));border:1px solid var(--edge);border-radius:16px;padding:18px}
+.grid5{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.lbl{font-size:12px;color:var(--mut);margin-bottom:6px}
+.inp,select{background:#0b0f13;color:var(--text);border:1px solid #1c232a;border-radius:12px;padding:12px;width:100%}
+.hours{display:grid;grid-template-columns:repeat(13,minmax(0,1fr));gap:10px}
+.hbtn{height:44px;display:flex;align-items:center;justify-content:center;border:1px solid #22272c;border-radius:12px;cursor:pointer;user-select:none;background:linear-gradient(180deg,#0f1113,#0b0d0f);font-weight:700;color:#d1d5db}
+.hbtn.on{background:linear-gradient(180deg,rgba(0,230,118,.18),rgba(0,200,83,.16));border-color:rgba(0,230,118,.55);color:#eafff1;box-shadow:0 0 0 1px rgba(0,230,118,.25) inset}
+.actions{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:16px}
+.btn{background:linear-gradient(180deg,var(--acc),var(--acc2));color:#062e15;font-weight:900;border:none;border-radius:12px;padding:12px 16px;cursor:pointer}
+.btn.sec{background:#11151a;color:#cbd5e1;border:1px solid #202832}
+.msg{font-size:12px}
+.ok{color:#22c55e}
+.err{color:#ef4444}
+.mut{color:#9ca3af}
+.kpi{border:1px solid #223;background:#0b0f13;border-radius:14px;padding:18px;text-align:center}
+.kpi h3{margin:0;font-size:13px;color:#a7f3d0}
+.kpi .v{font-size:28px;font-weight:900;margin-top:8px}
+.table{margin-top:12px;border-collapse:collapse;width:100%}
+th,td{border:1px solid #1f2730;padding:8px 10px;font-size:13px}
+th{background:#0e1318;text-align:left}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;border:1px solid #24303a;background:#0c1116;font-size:12px}
+.chip button{background:transparent;border:none;color:#93a3b3;cursor:pointer}
+.modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.5);}
+.modal .box{width:min(560px,92%);background:#0b0f13;border:1px solid #223;border-radius:16px;padding:18px}
+.box h3{margin:0 0 8px 0;font-size:16px}
+.list{font-size:14px;line-height:1.7;margin:8px 0 14px 0;color:#d1d5db}
+.row{display:flex;gap:10px;justify-content:flex-end}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.43.1/dist/umd/supabase.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <h1>Agente — Turnos & Métricas (MTD)</h1>
+      <div class="sub">Agenda (mín 3h/día, máx 3 días por registro) y consulta tu acumulado mensual.</div>
+    </div>
+    <div class="sub">Capacidad fija: <b>30</b> msgs/h</div>
+  </header>
+
+  <div class="tabs">
+    <button class="tab on" id="tShift">Programar turno</button>
+    <button class="tab" id="tMetrics">Mis métricas</button>
+  </div>
+
+  <!-- Sección turnos -->
+  <section class="card" id="shiftSec">
+    <div class="grid5">
+      <div>
+        <div class="lbl">Selecciona un día</div>
+        <input class="inp" type="date" id="datePick">
+      </div>
+      <div style="align-self:end">
+        <button class="btn sec" id="addDay">Agregar día</button>
+      </div>
+      <div>
+        <div class="lbl">Nombre</div>
+        <input class="inp" id="name" placeholder="Tu nombre">
+      </div>
+      <div>
+        <div class="lbl">Email</div>
+        <input class="inp" id="email" placeholder="tu@correo.com">
+      </div>
+      <div>
+        <div class="lbl">Canal</div>
+        <select id="channel" class="inp">
+          <option value="mensajes">mensajes</option>
+          <option value="llamadas">llamadas</option>
+          <option value="ambos">ambos</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="lbl" style="margin-top:10px">Días seleccionados (máximo 3)</div>
+    <div class="chips" id="days"></div>
+
+    <div style="margin-top:14px">
+      <div class="lbl">
+        Horas para el día activo <span id="activeDayLabel" class="mut"></span> (mínimo 3)
+      </div>
+      <div class="hours" id="hours"></div>
+    </div>
+
+    <div class="actions">
+      <button class="btn" id="save">Validar y guardar</button>
+      <span id="msg" class="msg"></span>
+    </div>
+
+    <div class="sub" style="margin-top:10px">Próximos turnos (tuyos) del mes</div>
+    <table class="table" id="myTbl">
+      <thead>
+        <tr><th>Fecha</th><th>Hora</th><th>Canal</th></tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </section>
+
+  <!-- Sección métricas -->
+  <section class="card" id="metricsSec" style="display:none">
+    <div class="grid5">
+      <div>
+        <div class="lbl">Mes (AAAA-MM)</div>
+        <input class="inp" id="month" placeholder="2025-11">
+      </div>
+      <div>
+        <div class="lbl">Tu email</div>
+        <input class="inp" id="memail" placeholder="tu@correo.com">
+      </div>
+      <div style="align-self:end">
+        <button class="btn" id="mload">Ver acumulado</button>
+      </div>
+    </div>
+
+    <div class="msg" id="mmsg" style="margin-top:8px"></div>
+
+    <div class="grid3" style="margin-top:12px">
+      <div class="kpi">
+        <h3>Asignadas</h3>
+        <div class="v" id="k_assigned">0</div>
+      </div>
+      <div class="kpi">
+        <h3>Atendidas</h3>
+        <div class="v" id="k_attended">0</div>
+      </div>
+      <div class="kpi">
+        <h3>Cerradas</h3>
+        <div class="v" id="k_closed">0</div>
+      </div>
+    </div>
+
+    <div class="grid3" style="margin-top:12px">
+      <div class="kpi">
+        <h3>Links enviados</h3>
+        <div class="v" id="k_sent">0</div>
+      </div>
+      <div class="kpi">
+        <h3>Links pagados</h3>
+        <div class="v" id="k_paid">0</div>
+      </div>
+      <div class="kpi">
+        <h3>Ventas</h3>
+        <div class="v" id="k_sales">0</div>
+      </div>
+    </div>
+
+    <div class="grid3" style="margin-top:12px">
+      <div class="kpi">
+        <h3>Conv. / Atendidas</h3>
+        <div class="v" id="k_cvr1">0%</div>
+      </div>
+      <div class="kpi">
+        <h3>Conv. / Links enviados</h3>
+        <div class="v" id="k_cvr2">0%</div>
+      </div>
+      <div class="kpi">
+        <h3>Conv. / Links pagados</h3>
+        <div class="v" id="k_cvr3">0%</div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- Modal de confirmación de turnos -->
+<div class="modal" id="confirmModal" role="dialog" aria-modal="true">
+  <div class="box">
+    <h3>Confirma tus turnos</h3>
+    <div class="list" id="confirmList"></div>
+    <div class="row">
+      <button class="btn sec" id="cancelConfirm">Cancelar</button>
+      <button class="btn" id="acceptConfirm">Aceptar y guardar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const SUPABASE_URL="https://wbplsmimcuphytdfjapz.supabase.co";
+const SUPABASE_ANON_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndicGxzbWltY3VwaHl0ZGZqYXB6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI4NTA3NzQsImV4cCI6MjA3ODQyNjc3NH0.1iC_zrG5FU2jCv_4qzqf8Si8t3cknA705ioPwOz3zSY";
+const sb=supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY,{auth:{persistSession:false}});
+const CSV_BASE_URL="https://fsalas-ship-it.github.io/agent-shift-planner/monthly";
+
+const $=id=>document.getElementById(id);
+const tShift=$('tShift'),tMetrics=$('tMetrics');
+const shiftSec=$('shiftSec'),metricsSec=$('metricsSec');
+
+tShift.onclick=()=>{tShift.classList.add('on');tMetrics.classList.remove('on');shiftSec.style.display='block';metricsSec.style.display='none';};
+tMetrics.onclick=()=>{tMetrics.classList.add('on');tShift.classList.remove('on');shiftSec.style.display='none';metricsSec.style.display='block';};
+
+function toast(kind,msg){ const el=$('msg'); el.className='msg '+(kind||'mut'); el.textContent=msg; }
+
+const FIXED_CAP=30;
+const HOURS=[9,10,11,12,13,14,15,16,17,18,19,20,21];
+
+let activeDay=null;
+const selectedDays=[];
+const hoursByDay={};
+
+(function initDates(){
+  const d=new Date();
+  const iso=new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,10);
+  $('datePick').value=iso;
+  setActiveDay(iso,true);
+})();
+
+function setActiveDay(date,ensureAdded=false){
+  activeDay=date;
+  $('activeDayLabel').textContent=activeDay?('('+activeDay+')'):'';
+  if(ensureAdded && !selectedDays.includes(date)) addDay(date);
+  renderDays();
+  paintHours();
+}
+
+function addDay(date){
+  if(!date)return;
+  if(selectedDays.includes(date))return setActiveDay(date);
+  if(selectedDays.length>=3){return toast('err','Máximo 3 días por registro.');}
+  selectedDays.push(date);
+  hoursByDay[date]=hoursByDay[date]||new Set();
+  setActiveDay(date);
+}
+
+function removeDay(date){
+  const i=selectedDays.indexOf(date);
+  if(i>=0){
+    selectedDays.splice(i,1);
+    delete hoursByDay[date];
+  }
+  if(selectedDays.length){ setActiveDay(selectedDays[0]); }
+  else { activeDay=null; paintHours(); renderDays(); }
+}
+
+$('addDay').onclick=()=>{
+  const d=$('datePick').value;
+  if(!d){toast('err','Selecciona un día.');return;}
+  addDay(d);
+};
+
+function renderDays(){
+  const box=$('days');
+  box.innerHTML='';
+  selectedDays.forEach(d=>{
+    const el=document.createElement('span');
+    el.className='chip';
+    el.innerHTML=`${d} ${d===activeDay?'<b>(activo)</b>':''}
+      <button data-sel="${d}">●</button>
+      <button data-del="${d}">×</button>`;
+    box.appendChild(el);
+  });
+  box.querySelectorAll('button[data-sel]').forEach(b=> b.onclick=()=> setActiveDay(b.getAttribute('data-sel')) );
+  box.querySelectorAll('button[data-del]').forEach(b=> b.onclick=()=> removeDay(b.getAttribute('data-del')) );
+}
+
+function paintHours(){
+  const box=$('hours');
+  box.innerHTML='';
+  if(!activeDay){
+    box.innerHTML='<div class="mut">Primero agrega un día.</div>';
+    return;
+  }
+  const sel=hoursByDay[activeDay]||(hoursByDay[activeDay]=new Set());
+  HOURS.forEach(h=>{
+    const d=document.createElement('div');
+    d.className='hbtn'+(sel.has(h)?' on':'');
+    d.textContent=h+":00";
+    d.onclick=()=>{
+      sel.has(h)?sel.delete(h):sel.add(h);
+      paintHours();
+    };
+    box.appendChild(d);
+  });
+}
+
+$('save').onclick=async ()=>{
+  const name=$('name').value.trim();
+  const email=$('email').value.trim();
+  const channel=$('channel').value;
+  if(!name||!email){ return toast('err','Escribe tu nombre y email.'); }
+  if(selectedDays.length===0){ return toast('err','Agrega al menos 1 día.'); }
+  for(const d of selectedDays){
+    if((hoursByDay[d]||new Set()).size<3){
+      return toast('err',`El día ${d} tiene menos de 3 horas.`);
+    }
+  }
+
+  const lines=selectedDays.map(d=>{
+    const arr=Array.from(hoursByDay[d]||[])
+      .sort((a,b)=>a-b)
+      .map(h=>`${h}:00`)
+      .join(', ');
+    return `<li><b>${d}</b> — ${arr}</li>`;
+  }).join('');
+
+  $('confirmList').innerHTML=`
+    <p>
+      <b>Nombre:</b> ${name}<br>
+      <b>Email:</b> ${email}<br>
+      <b>Canal:</b> ${channel}<br>
+      <b>Capacidad:</b> ${FIXED_CAP} msgs/h
+    </p>
+    <ul>${lines}</ul>
+  `;
+  showConfirm(true);
+
+  $('acceptConfirm').onclick=async ()=>{
+    showConfirm(false);
+    toast('mut','Guardando…');
+    const rows=[];
+    selectedDays.forEach(d=>{
+      (hoursByDay[d]||new Set()).forEach(h=>{
+        rows.push({date:d,hour:h,name,email,channel,cap_msg:FIXED_CAP});
+      });
+    });
+    try{
+      const {error,status}=await sb
+        .from('bookings')
+        .upsert(rows,{onConflict:'date,hour,email',ignoreDuplicates:false,defaultToNull:true});
+      if(error){ return toast('err',`Error (${status||'—'}): ${error.message}`); }
+      toast('ok','Turnos guardados ✔️');
+      selectedDays.splice(0,selectedDays.length);
+      for(const k in hoursByDay) delete hoursByDay[k];
+      renderDays();
+      paintHours();
+      loadMyShifts();
+    }catch(e){
+      toast('err','Excepción: '+(e?.message||String(e)));
+    }
+  };
+};
+
+$('cancelConfirm').onclick=()=>showConfirm(false);
+function showConfirm(f){ $('confirmModal').style.display=f?'flex':'none'; }
+
+async function loadMyShifts(){
+  const email=($('email').value||'').trim();
+  if(!email) return;
+  const d=new Date();
+  const ym=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
+  const {data,error}=await sb
+    .from('bookings')
+    .select('date,hour,channel,email')
+    .ilike('email',email)
+    .gte('date',ym+'-01')
+    .lte('date',ym+'-31')
+    .order('date')
+    .order('hour');
+
+  const tb=$('myTbl').querySelector('tbody');
+  tb.innerHTML='';
+  if(error){
+    tb.innerHTML=`<tr><td colspan="3">Error: ${error.message}</td></tr>`;
+    return;
+  }
+  (data||[]).forEach(r=>{
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td>${r.date}</td><td>${r.hour}:00</td><td>${r.channel||'—'}</td>`;
+    tb.appendChild(tr);
+  });
+}
+$('email').addEventListener('change', loadMyShifts);
+
+// Métricas MTD
+const FIELD_PATTERNS={
+  assigned:[/asignad/i,/assigned/i,/asignadas/i],
+  attended:[/atendid/i,/conversac.*(atend|gest)/i,/attend/i],
+  closed:[/cerrad/i,/closed/i,/resuelt/i],
+  sent:[/links?.*enviad/i,/enviad.*links?/i,/links?_sent/i],
+  paid:[/links?.*(pagad|paid)/i,/(pagos?|ventas?).*links?/i,/paid_links?/i],
+  sales:[/ventas?/i,/sales/i,/orders?/i,/pagos?.*confirm/i]
+};
+
+function pickColumn(hs,pats){
+  for(const p of pats){
+    const h=hs.find(c=>p.test(String(c)));
+    if(h) return h;
+  }
+  return null;
+}
+function toNum(v){
+  const n=Number(String(v).replace(/[^0-9.-]/g,''));
+  return isFinite(n)?n:0;
+}
+async function fetchCSV(url){
+  const r=await fetch(url,{cache:"no-store"});
+  if(!r.ok) throw new Error("HTTP "+r.status);
+  const t=await r.text();
+  return new Promise((res,rej)=>Papa.parse(t,{header:true,skipEmptyLines:true,complete:x=>res(x.data),error:rej}));
+}
+
+$('mload').onclick=async ()=>{
+  const month=($('month').value||'').trim();
+  const email=($('memail').value||'').trim().toLowerCase();
+  if(!month||!email){
+    $('mmsg').className='msg err';
+    $('mmsg').textContent='Escribe mes y email.';
+    return;
+  }
+  $('mmsg').className='msg mut';
+  $('mmsg').textContent='Cargando…';
+  try{
+    const url=`${CSV_BASE_URL}/${month}.csv`;
+    const rows=await fetchCSV(url);
+    if(!rows.length) throw new Error('CSV sin filas');
+    const headers=Object.keys(rows[0]||{});
+    const emailCol=headers.find(h=>/email/i.test(h))||'email';
+    const mine=rows.filter(r=> String(r[emailCol]||'').toLowerCase()===email);
+    if(!mine.length){
+      $('mmsg').className='msg err';
+      $('mmsg').textContent='No hay registros para ese email.';
+      return;
+    }
+    const pick=k=>pickColumn(headers,FIELD_PATTERNS[k]);
+    const sum=col=>mine.reduce((a,r)=>a+toNum(r[col]??0),0);
+
+    const colA=pick('assigned'),
+          colAt=pick('attended'),
+          colC=pick('closed'),
+          colS=pick('sent'),
+          colP=pick('paid'),
+          colV=pick('sales');
+
+    const assigned=colA?sum(colA):0;
+    const attended=colAt?sum(colAt):0;
+    const closed=colC?sum(colC):0;
+    const sent=colS?sum(colS):0;
+    const paid=colP?sum(colP):0;
+    const sales=colV?sum(colV):0;
+
+    const pct=x=>(x*100).toFixed(1)+'%';
+    const safe=(a,b)=>b>0?a/b:0;
+
+    $('k_assigned').textContent=assigned;
+    $('k_attended').textContent=attended;
+    $('k_closed').textContent=closed;
+    $('k_sent').textContent=sent;
+    $('k_paid').textContent=paid;
+    $('k_sales').textContent=sales;
+    $('k_cvr1').textContent=pct(safe(sales,attended));
+    $('k_cvr2').textContent=pct(safe(sales,sent));
+    $('k_cvr3').textContent=pct(safe(sales,paid));
+
+    $('mmsg').className='msg ok';
+    $('mmsg').textContent='Listo ✔️';
+  }catch(e){
+    $('mmsg').className='msg err';
+    $('mmsg').textContent='Error: '+(e?.message||String(e));
+  }
+};
+</script>
+</body>
+</html>
