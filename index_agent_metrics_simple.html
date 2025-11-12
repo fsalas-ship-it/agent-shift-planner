@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Agent Metrics — Resumen simple</title>
+  <style>
+    :root{
+      --bg:#05060a; --panel:#0b0f13; --edge:#161b21; --text:#e5e7eb; --mut:#9ca3af;
+      --accent:#00e676; --accent-2:#00c853; --danger:#ef4444;
+    }
+    *{box-sizing:border-box}
+    body{margin:0; font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial; color:var(--text); background:var(--bg)}
+    .wrap{max-width:900px; margin:0 auto; padding:28px}
+    h1{margin:0 0 8px 0; font-size:22px; font-weight:900}
+    .sub{color:var(--mut); font-size:12px; margin-bottom:16px}
+    .card{background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.00));
+      border:1px solid var(--edge); border-radius:16px; padding:18px}
+    .grid{display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:12px}
+    .lbl{font-size:12px; color:var(--mut); margin-bottom:6px}
+    .inp, select{background:var(--panel); color:var(--text); border:1px solid #1c232a; border-radius:12px; padding:12px; width:100%}
+    .btn{background:linear-gradient(180deg, var(--accent), var(--accent-2)); color:#062e15; font-weight:900; border:none; border-radius:12px; padding:12px 16px; cursor:pointer}
+    .actions{display:flex; gap:12px; align-items:center; flex-wrap:wrap; margin-top:12px}
+    .msg{font-size:12px} .ok{color:#22c55e} .err{color:var(--danger)} .mut{color:var(--mut)}
+
+    .mapper{margin-top:12px; padding:12px; border:1px dashed #2a3038; border-radius:12px}
+    .mapgrid{display:grid; grid-template-columns:repeat(5, minmax(0,1fr)); gap:8px}
+    @media (max-width:900px){ .grid{grid-template-columns:repeat(2, minmax(0,1fr));} .mapgrid{grid-template-columns:repeat(2, minmax(0,1fr));} }
+
+    .summary{margin-top:16px; display:grid; grid-template-columns:repeat(5, minmax(0,1fr)); gap:12px}
+    .kpi{border:1px solid #223; background:var(--panel); border-radius:14px; padding:14px; text-align:center}
+    .kpi h3{margin:0; font-size:12px; color:#a7f3d0}
+    .kpi .v{font-size:26px; font-weight:900; margin-top:8px}
+    .kpi .s{font-size:11px; color:#9ca3af; margin-top:2px}
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Agent Metrics — Resumen</h1>
+    <div class="sub">Carga tu CSV del día, ingresa tu email y mira tu resumen simple. (Sin tablas ni gráficos)</div>
+
+    <div class="card">
+      <div class="grid">
+        <div><div class="lbl">Fecha</div><input class="inp" type="date" id="mdate"></div>
+        <div><div class="lbl">Tu email</div><input class="inp" id="memail" placeholder="tu@correo.com"></div>
+        <div><div class="lbl">CSV (subir)</div><input class="inp" type="file" id="mfile" accept=".csv,text/csv"></div>
+        <div><div class="lbl">o URL del CSV</div><input class="inp" id="murl" placeholder="https://...raw.csv"></div>
+        <div style="align-self:end"><button class="btn" id="mload">Cargar CSV</button></div>
+      </div>
+
+      <div id="mapper" class="mapper" style="display:none">
+        <div class="lbl"><b>Mapea columnas</b> (se guardará en este navegador)</div>
+        <div class="mapgrid">
+          <div><div class="lbl">Conversaciones asignadas</div><select id="map-assigned" class="inp"></select></div>
+          <div><div class="lbl">Conversaciones atendidas</div><select id="map-attended" class="inp"></select></div>
+          <div><div class="lbl">Links enviados</div><select id="map-sent" class="inp"></select></div>
+          <div><div class="lbl">Links convertidos (ventas)</div><select id="map-sales" class="inp"></select></div>
+          <div><div class="lbl">Email (del agente)</div><select id="map-email" class="inp"></select></div>
+        </div>
+        <div class="actions">
+          <button class="btn" id="saveMap">Guardar mapeo</button>
+          <button class="btn" id="runMetrics">Ver mi resumen</button>
+          <span id="mmsg" class="msg"></span>
+        </div>
+      </div>
+
+      <div class="summary" id="summary" style="display:none">
+        <div class="kpi"><h3>Asignadas</h3><div class="v" id="k_assigned">0</div></div>
+        <div class="kpi"><h3>Atendidas</h3><div class="v" id="k_attended">0</div></div>
+        <div class="kpi"><h3>Links enviados</h3><div class="v" id="k_sent">0</div></div>
+        <div class="kpi"><h3>Links convertidos</h3><div class="v" id="k_sales">0</div></div>
+        <div class="kpi"><h3>Conv.</h3><div class="v" id="k_cvr1">0%</div><div class="s">ventas / conversaciones atendidas</div></div>
+      </div>
+      <div class="summary" id="summary2" style="display:none; grid-template-columns:repeat(1, minmax(0,1fr))">
+        <div class="kpi"><h3>Conv. sobre links enviados</h3><div class="v" id="k_cvr2">0%</div><div class="s">ventas / links enviados</div></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const $ = (id)=>document.getElementById(id);
+    const mdate = $('mdate'); const memail = $('memail'); const mfile = $('mfile'); const murl = $('murl');
+    const mapper = $('mapper'); const mmsg = $('mmsg');
+    const summary = $('summary'); const summary2 = $('summary2');
+
+    // default date = hoy
+    (function(){
+      const d=new Date(); const iso=new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,10);
+      mdate.value=iso;
+    })();
+
+    let rawRows = []; let headers = []; let key = null;
+
+    $('mload').onclick = loadCSV;
+    $('saveMap').onclick = saveMap;
+    $('runMetrics').onclick = runMetrics;
+
+    function storageKey(){ return 'mapper_simple::'+(key||'default'); }
+
+    async function loadCSV(){
+      rawRows=[]; headers=[]; key=null; mapper.style.display='none'; summary.style.display='none'; summary2.style.display='none'; mmsg.textContent='';
+
+      const file = mfile.files[0];
+      const url  = murl.value.trim();
+      try{
+        if(file){
+          rawRows = await parseCSVFile(file);
+          key = 'file::'+(file.name||'csv');
+        }else if(url){
+          rawRows = await fetchCSV(url);
+          try{ const u = new URL(url); key = 'url::'+u.hostname+u.pathname; } catch{ key = 'url::'+url; }
+        }else{
+          mmsg.textContent='Sube un CSV o indica una URL.'; return;
+        }
+      }catch(e){
+        mmsg.textContent='Error leyendo CSV: '+(e?.message||String(e));
+        return;
+      }
+
+      if(!rawRows.length){ mmsg.textContent='CSV vacío.'; return; }
+
+      headers = Array.from(new Set(rawRows.flatMap(r=>Object.keys(r))));
+      buildMapper(headers);
+      mapper.style.display='block';
+
+      // precarga mapeo si existe
+      const saved = JSON.parse(localStorage.getItem(storageKey())||'{}');
+      for(const [id,val] of Object.entries(saved)){
+        const el = $('map-'+id); if(el){ el.value = val || ''; }
+      }
+    }
+
+    function buildMapper(cols){
+      const ids = ['assigned','attended','sent','sales','email'];
+      ids.forEach(id=>{
+        const el = $('map-'+id); el.innerHTML='';
+        const opt0 = document.createElement('option'); opt0.value=''; opt0.textContent='— seleccionar —'; el.appendChild(opt0);
+        cols.forEach(c=>{ const o=document.createElement('option'); o.value=c; o.textContent=c; el.appendChild(o); });
+      });
+    }
+
+    function saveMap(){
+      const map = getMap();
+      localStorage.setItem(storageKey(), JSON.stringify(map));
+      mmsg.textContent='Mapeo guardado ✔️';
+    }
+
+    function getMap(){
+      return {
+        assigned: $('map-assigned').value,
+        attended: $('map-attended').value,
+        sent: $('map-sent').value,
+        sales: $('map-sales').value,
+        email: $('map-email').value
+      };
+    }
+
+    function toNum(v){ const n = Number(String(v).replace(/[^0-9.-]/g,'')); return isFinite(n)?n:0; }
+
+    async function runMetrics(){
+      mmsg.textContent='';
+      const date = mdate.value;
+      const email = (memail.value||'').trim().toLowerCase();
+      if(!email){ mmsg.textContent='Escribe tu email.'; return; }
+      if(!rawRows.length){ mmsg.textContent='Primero carga un CSV y mapea.'; return; }
+      const map = getMap();
+      if(!map.email || !map.attended || !map.sent || !map.sales){
+        mmsg.textContent='Faltan campos obligatorios: email, atendidas, links enviados y ventas.'; return;
+      }
+
+      // Normaliza al vuelo
+      const norm = [];
+      for(const r of rawRows){
+        const rowEmail = String(r[map.email]||'').toLowerCase();
+        if(rowEmail !== email) continue; // filtra por agente
+        // date es opcional: si tu CSV tiene varias fechas y quieres filtrar por día, intenta deducir si existe un campo fecha en alguna columna común
+        let rowDate = '';
+        for(const k of Object.keys(r)){
+          if(/fecha|date/i.test(k)){ rowDate = String(r[k]).slice(0,10); break; }
+        }
+        if(date && rowDate && rowDate !== date) continue;
+
+        norm.push({
+          assigned: toNum(r[map.assigned]||0),
+          attended: toNum(r[map.attended]||0),
+          sent:     toNum(r[map.sent]||0),
+          sales:    toNum(r[map.sales]||0)
+        });
+      }
+
+      // Agrupa (suma)
+      const sum = (arr, f)=> arr.reduce((a,b)=> a + f(b), 0);
+      const assigned = sum(norm, r=>r.assigned||0);
+      const attended = sum(norm, r=>r.attended||0);
+      const sent     = sum(norm, r=>r.sent||0);
+      const sales    = sum(norm, r=>r.sales||0);
+
+      // KPIs
+      $('k_assigned').textContent = assigned;
+      $('k_attended').textContent = attended;
+      $('k_sent').textContent     = sent;
+      $('k_sales').textContent    = sales;
+
+      const cvr1 = attended>0 ? (sales/attended*100).toFixed(1)+'%' : '0%';
+      const cvr2 = sent>0 ? (sales/sent*100).toFixed(1)+'%' : '0%';
+      $('k_cvr1').textContent = cvr1;
+      $('k_cvr2').textContent = cvr2;
+
+      summary.style.display='grid';
+      summary2.style.display='grid';
+      mmsg.textContent = `Filas procesadas: ${norm.length}`;
+    }
+
+    function parseCSVFile(file){
+      return new Promise((resolve, reject)=>{
+        Papa.parse(file, { header:true, skipEmptyLines:true,
+          complete: res=> resolve(res.data),
+          error: err=> reject(err)
+        });
+      });
+    }
+    async function fetchCSV(url){
+      const res = await fetch(url);
+      if(!res.ok) throw new Error('HTTP '+res.status);
+      const text = await res.text();
+      return new Promise((resolve, reject)=>{
+        Papa.parse(text, { header:true, skipEmptyLines:true,
+          complete: r=> resolve(r.data),
+          error: e=> reject(e)
+        });
+      });
+    }
+  </script>
+</body>
+</html>
