@@ -103,6 +103,7 @@ th{background:#0e1318;text-align:left}
 
     <div class="actions">
       <button class="btn" id="save">Validar y guardar</button>
+      <button class="btn sec" id="viewMyShifts">Ver mis turnos</button>
       <span id="msg" class="msg"></span>
     </div>
 
@@ -376,6 +377,7 @@ async function loadMyShifts(){
   });
 }
 $('email').addEventListener('change', loadMyShifts);
+$('viewMyShifts').onclick = loadMyShifts;
 
 // --- Métricas MTD (adaptado a tu CSV real) ---
 function toNum(v){
@@ -411,7 +413,6 @@ $('mload').onclick=async ()=>{
     if(!rows.length) throw new Error('CSV sin filas');
     const headers=Object.keys(rows[0]||{});
 
-    // Columna email (ya la renombraste a "Email")
     const emailCol=headers.find(h=>/email/i.test(h)) || headers[0];
     const mine=rows.filter(r=>String(r[emailCol]||'').toLowerCase()===email);
     if(!mine.length){
@@ -420,9 +421,6 @@ $('mload').onclick=async ()=>{
       return;
     }
 
-    // Adaptado a tu archivo:
-    // Email, Conv. gestionadas, Conv. cerradas,
-    // Usuarios a quien se envio link de pago, Txn atribuidas
     const colAssigned  = findHeader(headers,'conv. gestionadas');
     const colClosed    = findHeader(headers,'conv. cerrad');
     const colSent      = findHeader(headers,'usuarios a quien se envio link de pago');
@@ -431,11 +429,11 @@ $('mload').onclick=async ()=>{
     const sum = (col)=> mine.reduce((a,r)=>a+toNum(r[col]??0),0);
 
     const assigned = colAssigned ? sum(colAssigned) : 0;
-    const attended = assigned; // por ahora igual que gestionadas
+    const attended = assigned;
     const closed   = colClosed ? sum(colClosed) : 0;
     const sent     = colSent ? sum(colSent) : 0;
     const paid     = colTxn ? sum(colTxn) : 0;
-    const sales    = paid; // usamos Txn atribuidas como ventas
+    const sales    = paid;
 
     $('k_assigned').textContent=assigned;
     $('k_attended').textContent=attended;
