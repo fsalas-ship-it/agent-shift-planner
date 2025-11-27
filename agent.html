@@ -3,16 +3,16 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Sales never sleep — Turnos & Métricas</title>
+<title>Sales never sleep — Turnos & Métricas (MTD)</title>
 <style>
 :root{
-  --bg:#030712;
-  --panel:#020617;
-  --edge:#1f2937;
+  --bg:#05060a;
+  --panel:#0b0f13;
+  --edge:#161b21;
   --text:#e5e7eb;
   --mut:#9ca3af;
-  --acc:#facc15;    /* amarillo promo */
-  --acc2:#22c55e;   /* verde dinero */
+  --acc:#facc15; /* amarillo promo */
+  --acc2:#22c55e;/* verde dinero */
   --bad:#ef4444;
   --ok:#22c55e;
 }
@@ -21,57 +21,46 @@ body{
   margin:0;
   min-height:100vh;
   background:
-    radial-gradient(900px 500px at 0% 0%,rgba(250,204,21,.20),transparent 60%),
-    radial-gradient(900px 600px at 100% 0%,rgba(34,197,94,.16),transparent 60%),
+    radial-gradient(1200px 600px at 10% -10%, rgba(250,204,21,.18),transparent 60%),
+    radial-gradient(1000px 600px at 90% -20%, rgba(34,197,94,.18),transparent 60%),
     var(--bg);
   color:var(--text);
   font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
-  animation:bg-move 18s linear infinite alternate;
 }
-@keyframes bg-move{
-  0%{background-position:0 0,100% 0,0 0;}
-  100%{background-position:-80px -40px,100px -60px,0 0;}
-}
-
 .wrap{
-  width:100%;
-  padding:24px 18px 40px;
+  max-width:1120px;
+  margin:0 auto;
+  padding:28px 18px 40px;
 }
 header{
   display:flex;
   align-items:flex-start;
   justify-content:space-between;
   gap:16px;
-  margin-bottom:14px;
+  margin-bottom:14px
 }
 h1{
   margin:0;
-  font-size:32px;
+  font-size:28px;
   font-weight:900;
   text-transform:uppercase;
   letter-spacing:.16em;
-  animation:hero-pop 1.2s ease-out;
-}
-@keyframes hero-pop{
-  0%{transform:translateY(8px);opacity:0;}
-  100%{transform:translateY(0);opacity:1;}
-}
-.hero-sub{
-  margin-top:6px;
-  font-size:14px;
-  color:#e5e7eb;
 }
 .sub{color:var(--mut);font-size:12px}
+.hero-sub{
+  margin-top:6px;
+  font-size:13px;
+  color:#e5e7eb;
+}
 
-/* Banner Black Friday */
+/* Banner comercial */
 .bf-banner{
-  width:100%;
-  margin:14px 0 18px 0;
-  padding:14px 16px;
+  margin:14px 0 16px;
+  padding:12px 16px;
   border-radius:14px;
   border:1px dashed rgba(250,204,21,.7);
   background:
-    radial-gradient(circle at 0 0,rgba(250,204,21,.24),transparent 55%),
+    radial-gradient(circle at 0 0,rgba(250,204,21,.20),transparent 55%),
     radial-gradient(circle at 100% 0,rgba(34,197,94,.22),transparent 55%),
     #020617;
   display:flex;
@@ -79,11 +68,6 @@ h1{
   gap:10px;
   align-items:center;
   justify-content:space-between;
-  animation:banner-glow 2.4s ease-in-out infinite alternate;
-}
-@keyframes banner-glow{
-  0%{box-shadow:0 0 0 rgba(250,204,21,0.1);}
-  100%{box-shadow:0 0 32px rgba(250,204,21,0.4);}
 }
 .bf-pill{
   font-size:11px;
@@ -102,62 +86,57 @@ h1{
 }
 
 /* Tabs */
-.tabs{display:flex;gap:8px;margin-bottom:12px}
+.tabs{
+  display:flex;
+  gap:8px;
+  margin-bottom:12px;
+}
 .tab{
   border:1px solid var(--edge);
-  background:linear-gradient(180deg,rgba(15,23,42,.9),rgba(15,23,42,.7));
+  background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,0));
   color:#d1d5db;
   padding:10px 14px;
   border-radius:999px;
   cursor:pointer;
-  display:flex;
-  align-items:center;
-  gap:8px;
-  font-size:13px;
-  transition:transform .12s ease-out, box-shadow .12s ease-out, border-color .12s;
-}
-.tab::before{
-  content:'';
-  width:8px;
-  height:8px;
-  border-radius:999px;
-  background:rgba(148,163,184,.5);
 }
 .tab.on{
-  border-color:rgba(250,204,21,.9);
+  border-color:rgba(250,204,21,.75);
   color:#fefce8;
-  box-shadow:0 0 0 1px rgba(250,204,21,.4) inset,0 10px 25px rgba(0,0,0,.8);
-  transform:translateY(-1px);
-}
-.tab.on::before{
-  background:radial-gradient(circle at 30% 30%,#fff,var(--acc2));
+  box-shadow:0 0 0 1px rgba(250,204,21,.4) inset;
 }
 
 /* Cards */
 .card{
-  width:100%;
-  background:
-    radial-gradient(circle at 0 0,rgba(250,204,21,.06),transparent 55%),
-    radial-gradient(circle at 100% 0,rgba(34,197,94,.08),transparent 55%),
-    linear-gradient(180deg,rgba(15,23,42,.96),rgba(15,23,42,.92));
+  background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,0));
   border:1px solid var(--edge);
-  border-radius:18px;
+  border-radius:16px;
   padding:18px;
-  box-shadow:0 20px 40px rgba(0,0,0,.65);
 }
-.grid5{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
-.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
-.lbl{font-size:12px;color:var(--mut);margin-bottom:6px}
+.grid5{
+  display:grid;
+  grid-template-columns:repeat(5,minmax(0,1fr));
+  gap:12px;
+}
+.grid3{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:12px;
+}
+.lbl{
+  font-size:12px;
+  color:var(--mut);
+  margin-bottom:6px;
+}
 .inp,select{
-  background:#020617;
+  background:#0b0f13;
   color:var(--text);
-  border:1px solid #1f2937;
+  border:1px solid #1c232a;
   border-radius:12px;
   padding:12px;
   width:100%;
 }
 
-/* Tag de modo de día */
+/* Tag horario */
 .tag{
   margin-left:6px;
   padding:2px 8px;
@@ -166,11 +145,6 @@ h1{
   border:1px solid #374151;
   background:#020617;
   color:#e5e7eb;
-}
-.tag-bf{
-  background:linear-gradient(90deg,#facc15,#22c55e);
-  color:#111827;
-  border-color:rgba(15,23,42,.8);
 }
 
 /* Horas */
@@ -188,20 +162,637 @@ h1{
   border-radius:12px;
   cursor:pointer;
   user-select:none;
-  background:linear-gradient(180deg,#020617,#020617);
+  background:linear-gradient(180deg,#0f1113,#0b0d0f);
   font-weight:700;
-  font-size:13px;
-  color:#e5e7eb;
-  box-shadow:0 6px 14px rgba(0,0,0,.6);
+  color:#d1d5db;
   position:relative;
-  transition:transform .08s ease-out, box-shadow .08s ease-out, border-color .08s;
-}
-.hbtn:hover{
-  transform:translateY(-1px);
-  box-shadow:0 10px 22px rgba(0,0,0,.75);
-  border-color:#4b5563;
 }
 .hbtn.on{
-  background:linear-gradient(180deg,rgba(250,204,21,.35),rgba(34,197,
+  background:linear-gradient(180deg,rgba(250,204,21,.35),rgba(34,197,94,.38));
+  border-color:rgba(250,204,21,.8);
+  color:#111827;
+  box-shadow:0 0 0 1px rgba(0,0,0,.6) inset;
+}
 
+/* Acciones */
+.actions{
+  display:flex;
+  gap:12px;
+  align-items:center;
+  flex-wrap:wrap;
+  margin-top:16px;
+}
+.btn{
+  background:linear-gradient(180deg,var(--acc),var(--acc2));
+  color:#062e15;
+  font-weight:900;
+  border:none;
+  border-radius:12px;
+  padding:12px 16px;
+  cursor:pointer;
+}
+.btn.sec{
+  background:#11151a;
+  color:#cbd5e1;
+  border:1px solid #202832;
+}
+.msg{font-size:12px}
+.ok{color:#22c55e}
+.err{color:#ef4444}
+.mut{color:#9ca3af}
 
+/* Chips días */
+.chips{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-top:8px;
+}
+.chip{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:6px 10px;
+  border-radius:999px;
+  border:1px solid #24303a;
+  background:#0c1116;
+  font-size:12px;
+}
+.chip button{
+  background:transparent;
+  border:none;
+  color:#93a3b3;
+  cursor:pointer;
+}
+
+/* Tabla */
+.table{
+  margin-top:12px;
+  border-collapse:collapse;
+  width:100%;
+}
+th,td{
+  border:1px solid #1f2730;
+  padding:8px 10px;
+  font-size:13px;
+}
+th{
+  background:#0e1318;
+  text-align:left;
+}
+
+/* KPI */
+.kpi{
+  border:1px solid #223;
+  background:#0b0f13;
+  border-radius:14px;
+  padding:18px;
+  text-align:center;
+}
+.kpi h3{
+  margin:0;
+  font-size:13px;
+  color:#a7f3d0;
+}
+.kpi .v{
+  font-size:28px;
+  font-weight:900;
+  margin-top:8px;
+}
+
+/* Modal */
+.modal{
+  position:fixed;
+  inset:0;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  background:rgba(0,0,0,.5);
+}
+.modal .box{
+  width:min(560px,92%);
+  background:#0b0f13;
+  border:1px solid #223;
+  border-radius:16px;
+  padding:18px;
+}
+.box h3{
+  margin:0 0 8px 0;
+  font-size:16px;
+}
+.list{
+  font-size:14px;
+  line-height:1.7;
+  margin:8px 0 14px 0;
+  color:#d1d5db;
+}
+.row{
+  display:flex;
+  gap:10px;
+  justify-content:flex-end;
+}
+
+/* Monedas */
+.coin{
+  position:fixed;
+  width:18px;
+  height:18px;
+  border-radius:50%;
+  background:
+    radial-gradient(circle at 30% 30%,#fff7c2,#facc15 50%,#eab308 75%,#92400e);
+  box-shadow:0 6px 14px rgba(0,0,0,.8);
+  pointer-events:none;
+  animation:coin-pop 800ms ease-out forwards;
+}
+@keyframes coin-pop{
+  0%{transform:translate3d(0,0,0) scale(.5);opacity:0;}
+  25%{opacity:1;}
+  100%{transform:translate3d(var(--dx,-10px),-90px,0) scale(1.1);opacity:0;}
+}
+
+@media(max-width:960px){
+  .grid5{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:640px){
+  header{flex-direction:column;align-items:flex-start}
+  .grid5,.grid3{grid-template-columns:minmax(0,1fr)}
+}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.43.1/dist/umd/supabase.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <h1>Sales never sleep</h1>
+      <div class="hero-sub">Del primer ping al último pago: agenda tus turnos y no dejes ventas dormidas.</div>
+      <div class="sub">
+        En Black Friday (28 nov – 1 dic) horario extendido <b>7:00 a. m. → 3:00 a. m.</b>.
+        Resto de días <b>9:00 a. m. → 9:00 p. m.</b> (mín 3h/día, máx 3 días por registro).
+      </div>
+    </div>
+    <div class="sub">Capacidad fija: <b>30</b> msgs/h</div>
+  </header>
+
+  <div class="bf-banner">
+    <div class="bf-pill">Black Friday Ops</div>
+    <div class="bf-copy">
+      28, 29, 30 de noviembre y 1 de diciembre son días clave. Asegura tus slots y atrapa cada oportunidad. 💸⚡
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab on" id="tShift">Programar turno</button>
+    <button class="tab" id="tMetrics">Mis métricas</button>
+  </div>
+
+  <!-- Sección turnos -->
+  <section class="card" id="shiftSec">
+    <div class="grid5">
+      <div>
+        <div class="lbl">Selecciona un día</div>
+        <input class="inp" type="date" id="datePick">
+      </div>
+      <div style="align-self:end">
+        <button class="btn sec" id="addDay">Agregar día</button>
+      </div>
+      <div>
+        <div class="lbl">Nombre</div>
+        <input class="inp" id="name" placeholder="Tu nombre">
+      </div>
+      <div>
+        <div class="lbl">Email</div>
+        <input class="inp" id="email" placeholder="tu@correo.com">
+      </div>
+      <div>
+        <div class="lbl">Canal</div>
+        <select id="channel" class="inp">
+          <option value="mensajes">mensajes</option>
+          <option value="llamadas">llamadas</option>
+          <option value="ambos">ambos</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="lbl" style="margin-top:10px">Días seleccionados (máximo 3)</div>
+    <div class="chips" id="days"></div>
+
+    <div style="margin-top:14px">
+      <div class="lbl">
+        Horas para el día activo <span id="activeDayLabel" class="mut"></span>
+        <span id="dayModeLabel" class="tag"></span> (mínimo 3)
+      </div>
+      <div class="hours" id="hours"></div>
+    </div>
+
+    <div class="actions">
+      <button class="btn" id="save">Validar y guardar</button>
+      <button class="btn sec" id="viewMyShifts">Ver mis turnos</button>
+      <span id="msg" class="msg"></span>
+    </div>
+
+    <div class="sub" style="margin-top:10px">Próximos turnos (tuyos) del mes</div>
+    <table class="table" id="myTbl">
+      <thead>
+        <tr><th>Fecha</th><th>Hora</th><th>Canal</th></tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </section>
+
+  <!-- Sección métricas -->
+  <section class="card" id="metricsSec" style="display:none">
+    <div class="grid5">
+      <div>
+        <div class="lbl">Mes (AAAA-MM)</div>
+        <input class="inp" id="month" placeholder="2025-11">
+      </div>
+      <div>
+        <div class="lbl">Tu email</div>
+        <input class="inp" id="memail" placeholder="tu@correo.com">
+      </div>
+      <div style="align-self:end">
+        <button class="btn" id="mload">Ver acumulado</button>
+      </div>
+    </div>
+
+    <div class="msg" id="mmsg" style="margin-top:8px"></div>
+
+    <div class="grid3" style="margin-top:12px">
+      <div class="kpi">
+        <h3>Asignadas</h3>
+        <div class="v" id="k_assigned">0</div>
+      </div>
+      <div class="kpi">
+        <h3>Atendidas</h3>
+        <div class="v" id="k_attended">0</div>
+      </div>
+      <div class="kpi">
+        <h3>Cerradas</h3>
+        <div class="v" id="k_closed">0</div>
+      </div>
+    </div>
+
+    <div class="grid3" style="margin-top:12px">
+      <div class="kpi">
+        <h3>Links enviados</h3>
+        <div class="v" id="k_sent">0</div>
+      </div>
+      <div class="kpi">
+        <h3>Links pagados</h3>
+        <div class="v" id="k_paid">0</div>
+      </div>
+      <div class="kpi">
+        <h3>Ventas</h3>
+        <div class="v" id="k_sales">0</div>
+      </div>
+    </div>
+
+    <div class="grid3" style="margin-top:12px">
+      <div class="kpi">
+        <h3>Conv. / Atendidas</h3>
+        <div class="v" id="k_cvr1">0%</div>
+      </div>
+      <div class="kpi">
+        <h3>Conv. / Links enviados</h3>
+        <div class="v" id="k_cvr2">0%</div>
+      </div>
+      <div class="kpi">
+        <h3>Conv. / Links pagados</h3>
+        <div class="v" id="k_cvr3">0%</div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- Modal de confirmación de turnos -->
+<div class="modal" id="confirmModal" role="dialog" aria-modal="true">
+  <div class="box">
+    <h3>Confirma tus turnos</h3>
+    <div class="list" id="confirmList"></div>
+    <div class="row">
+      <button class="btn sec" id="cancelConfirm">Cancelar</button>
+      <button class="btn" id="acceptConfirm">Aceptar y guardar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const SUPABASE_URL="https://wbplsmimcuphytdfjapz.supabase.co";
+const SUPABASE_ANON_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndicGxzbWltY3VwaHl0ZGZqYXB6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI4NTA3NzQsImV4cCI6MjA3ODQyNjc3NH0.1iC_zrG5FU2jCv_4qzqf8Si8t3cknA705ioPwOz3zSY";
+const sb=supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY,{auth:{persistSession:false}});
+const CSV_BASE_URL="https://fsalas-ship-it.github.io/agent-shift-planner/monthly";
+
+const $=id=>document.getElementById(id);
+const tShift=$('tShift'),tMetrics=$('tMetrics');
+const shiftSec=$('shiftSec'),metricsSec=$('metricsSec');
+
+tShift.onclick=()=>{tShift.classList.add('on');tMetrics.classList.remove('on');shiftSec.style.display='block';metricsSec.style.display='none';};
+tMetrics.onclick=()=>{tMetrics.classList.add('on');tShift.classList.remove('on');shiftSec.style.display='none';metricsSec.style.display='block';};
+
+function toast(kind,msg){ const el=$('msg'); el.className='msg '+(kind||'mut'); el.textContent=msg; }
+
+const FIXED_CAP=30;
+
+/* --- HORARIOS --- */
+// Horario normal: 9:00 → 21:00
+const NORMAL_HOURS=[9,10,11,12,13,14,15,16,17,18,19,20,21];
+
+// Horario extendido BF: 7:00 → 3:00 del siguiente día
+const EXTENDED_HOURS=[7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,0,1,2,3];
+
+// Días BF con horario extendido (MM-DD)
+const BF_DAYS=['11-28','11-29','11-30','12-01'];
+
+function isBfDay(dateStr){
+  if(!dateStr) return false;
+  return BF_DAYS.includes(dateStr.slice(5)); // MM-DD
+}
+
+function getHoursForDay(dateStr){
+  return isBfDay(dateStr) ? EXTENDED_HOURS : NORMAL_HOURS;
+}
+
+/* --- Monedas --- */
+function spawnCoins(x,y){
+  const howMany=4+Math.floor(Math.random()*3);
+  for(let i=0;i<howMany;i++){
+    const coin=document.createElement('div');
+    coin.className='coin';
+    const dx=(Math.random()*60-30).toFixed(0)+'px';
+    coin.style.setProperty('--dx',dx);
+    coin.style.left=(x+Math.random()*10-5)+'px';
+    coin.style.top=(y+Math.random()*10-5)+'px';
+    document.body.appendChild(coin);
+    setTimeout(()=>coin.remove(),800);
+  }
+}
+
+let activeDay=null;
+const selectedDays=[];
+const hoursByDay={};
+
+(function initDates(){
+  const d=new Date();
+  const iso=new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,10);
+  $('datePick').value=iso;
+  setActiveDay(iso,true);
+})();
+
+function updateDayModeLabel(){
+  const label=$('dayModeLabel');
+  if(!activeDay){
+    label.textContent='';
+    label.className='tag';
+    return;
+  }
+  if(isBfDay(activeDay)){
+    label.textContent='BF 7am → 3am';
+    label.className='tag';
+  }else{
+    label.textContent='Horario 9am → 9pm';
+    label.className='tag';
+  }
+}
+
+function setActiveDay(date,ensureAdded=false){
+  activeDay=date;
+  $('activeDayLabel').textContent=activeDay?('('+activeDay+')'):'';
+  if(ensureAdded && !selectedDays.includes(date)) addDay(date);
+  renderDays();
+  updateDayModeLabel();
+  paintHours();
+}
+
+function addDay(date){
+  if(!date)return;
+  if(selectedDays.includes(date))return setActiveDay(date);
+  if(selectedDays.length>=3){return toast('err','Máximo 3 días por registro.');}
+  selectedDays.push(date);
+  hoursByDay[date]=hoursByDay[date]||new Set();
+  setActiveDay(date);
+}
+
+function removeDay(date){
+  const i=selectedDays.indexOf(date);
+  if(i>=0){
+    selectedDays.splice(i,1);
+    delete hoursByDay[date];
+  }
+  if(selectedDays.length){ setActiveDay(selectedDays[0]); }
+  else { activeDay=null; paintHours(); renderDays(); updateDayModeLabel(); }
+}
+
+$('addDay').onclick=()=>{
+  const d=$('datePick').value;
+  if(!d){toast('err','Selecciona un día.');return;}
+  addDay(d);
+};
+
+function renderDays(){
+  const box=$('days');
+  box.innerHTML='';
+  selectedDays.forEach(d=>{
+    const el=document.createElement('span');
+    el.className='chip';
+    const badge = isBfDay(d) ? ' <span style="font-size:10px;color:#facc15;">BF</span>' : '';
+    el.innerHTML=`${d} ${d===activeDay?'<b>(activo)</b>':''}${badge}
+      <button data-sel="${d}">●</button>
+      <button data-del="${d}">×</button>`;
+    box.appendChild(el);
+  });
+  box.querySelectorAll('button[data-sel]').forEach(b=> b.onclick=()=> setActiveDay(b.getAttribute('data-sel')) );
+  box.querySelectorAll('button[data-del]').forEach(b=> b.onclick=()=> removeDay(b.getAttribute('data-del')) );
+}
+
+function paintHours(){
+  const box=$('hours');
+  box.innerHTML='';
+  if(!activeDay){
+    box.innerHTML='<div class="mut">Primero agrega un día.</div>';
+    return;
+  }
+  const sel=hoursByDay[activeDay]||(hoursByDay[activeDay]=new Set());
+  const list=getHoursForDay(activeDay);
+  list.forEach(h=>{
+    const d=document.createElement('div');
+    d.className='hbtn'+(sel.has(h)?' on':'');
+    const label=String(h).padStart(2,'0')+":00";
+    d.textContent=label;
+    d.onclick=(ev)=>{
+      sel.has(h)?sel.delete(h):sel.add(h);
+      paintHours();
+      spawnCoins(ev.clientX,ev.clientY);
+    };
+    box.appendChild(d);
+  });
+}
+
+$('save').onclick=async ()=>{
+  const name=$('name').value.trim();
+  const email=$('email').value.trim();
+  const channel=$('channel').value;
+  if(!name||!email){ return toast('err','Escribe tu nombre y email.'); }
+  if(selectedDays.length===0){ return toast('err','Agrega al menos 1 día.'); }
+  for(const d of selectedDays){
+    if((hoursByDay[d]||new Set()).size<3){
+      return toast('err',`El día ${d} tiene menos de 3 horas.`);
+    }
+  }
+
+  const lines=selectedDays.map(d=>{
+    const arr=Array.from(hoursByDay[d]||[])
+      .sort((a,b)=>a-b)
+      .map(h=>`${String(h).padStart(2,'0')}:00`)
+      .join(', ');
+    return `<li><b>${d}</b> — ${arr}</li>`;
+  }).join('');
+
+  $('confirmList').innerHTML=`
+    <p>
+      <b>Nombre:</b> ${name}<br>
+      <b>Email:</b> ${email}<br>
+      <b>Canal:</b> ${channel}<br>
+      <b>Capacidad:</b> ${FIXED_CAP} msgs/h
+    </p>
+    <ul>${lines}</ul>
+  `;
+  showConfirm(true);
+
+  $('acceptConfirm').onclick=async ()=>{
+    showConfirm(false);
+    toast('mut','Guardando…');
+    const rows=[];
+    selectedDays.forEach(d=>{
+      (hoursByDay[d]||new Set()).forEach(h=>{
+        rows.push({date:d,hour:h,name,email,channel,cap_msg:FIXED_CAP});
+      });
+    });
+    try{
+      const {error,status}=await sb
+        .from('bookings')
+        .upsert(rows,{onConflict:'date,hour,email',ignoreDuplicates:false,defaultToNull:true});
+      if(error){ return toast('err',`Error (${status||'—'}): ${error.message}`); }
+      toast('ok','Turnos guardados ✔️');
+      selectedDays.splice(0,selectedDays.length);
+      for(const k in hoursByDay) delete hoursByDay[k];
+      renderDays();
+      paintHours();
+      updateDayModeLabel();
+      loadMyShifts();
+    }catch(e){
+      toast('err','Excepción: '+(e?.message||String(e)));
+    }
+  };
+};
+
+$('cancelConfirm').onclick=()=>showConfirm(false);
+function showConfirm(f){ $('confirmModal').style.display=f?'flex':'none'; }
+
+async function loadMyShifts(){
+  const email=($('email').value||'').trim();
+  if(!email) return;
+  const d=new Date();
+  const ym=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
+  const {data,error}=await sb
+    .from('bookings')
+    .select('date,hour,channel,email')
+    .ilike('email',email)
+    .gte('date',ym+'-01')
+    .lte('date',ym+'-31')
+    .order('date')
+    .order('hour');
+
+  const tb=$('myTbl').querySelector('tbody');
+  tb.innerHTML='';
+  if(error){
+    tb.innerHTML=`<tr><td colspan="3">Error: ${error.message}</td></tr>`;
+    return;
+  }
+  (data||[]).forEach(r=>{
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td>${r.date}</td><td>${String(r.hour).padStart(2,'0')}:00</td><td>${r.channel||'—'}</td>`;
+    tb.appendChild(tr);
+  });
+}
+$('email').addEventListener('change', loadMyShifts);
+$('viewMyShifts').onclick = loadMyShifts;
+
+// --- Métricas MTD ---
+function toNum(v){
+  const n=Number(String(v).replace(/[^0-9.-]/g,''));
+  return isFinite(n)?n:0;
+}
+async function fetchCSV(url){
+  const r=await fetch(url,{cache:"no-store"});
+  if(!r.ok) throw new Error("HTTP "+r.status);
+  const t=await r.text();
+  return new Promise((res,rej)=>Papa.parse(t,{header:true,skipEmptyLines:true,complete:x=>res(x.data),error:rej}));
+}
+function pct(x){return (x*100).toFixed(1)+'%';}
+function safeDiv(a,b){return b>0?a/b:0;}
+function findHeader(headers,needle){
+  const n=needle.toLowerCase();
+  return headers.find(h=>h.toLowerCase().includes(n)) || null;
+}
+
+$('mload').onclick=async ()=>{
+  const month=($('month').value||'').trim();
+  const email=($('memail').value||'').trim().toLowerCase();
+  if(!month||!email){
+    $('mmsg').className='msg err';
+    $('mmsg').textContent='Escribe mes y email.';
+    return;
+  }
+  $('mmsg').className='msg mut';
+  $('mmsg').textContent='Cargando…';
+  try{
+    const url=`${CSV_BASE_URL}/${month}.csv`;
+    const rows=await fetchCSV(url);
+    if(!rows.length) throw new Error('CSV sin filas');
+    const headers=Object.keys(rows[0]||{});
+
+    const emailCol=headers.find(h=>/email/i.test(h)) || headers[0];
+    const mine=rows.filter(r=>String(r[emailCol]||'').toLowerCase()===email);
+    if(!mine.length){
+      $('mmsg').className='msg err';
+      $('mmsg').textContent='No hay registros para ese email.';
+      return;
+    }
+
+    const colAssigned  = findHeader(headers,'conv. gestionadas');
+    const colClosed    = findHeader(headers,'conv. cerrad');
+    const colSent      = findHeader(headers,'usuarios a quien se envio link de pago');
+    const colTxn       = findHeader(headers,'txn atribuida');
+
+    const sum = (col)=> mine.reduce((a,r)=>a+toNum(r[col]??0),0);
+
+    const assigned = colAssigned ? sum(colAssigned) : 0;
+    const attended = assigned;
+    const closed   = colClosed ? sum(colClosed) : 0;
+    const sent     = colSent ? sum(colSent) : 0;
+    const paid     = colTxn ? sum(colTxn) : 0;
+    const sales    = paid;
+
+    $('k_assigned').textContent=assigned;
+    $('k_attended').textContent=attended;
+    $('k_closed').textContent=closed;
+    $('k_sent').textContent=sent;
+    $('k_paid').textContent=paid;
+    $('k_sales').textContent=sales;
+
+    $('k_cvr1').textContent=pct(safeDiv(sales,attended));
+    $('k_cvr2').textContent=pct(safeDiv(sales,sent));
+    $('k_cvr3').textContent=pct(safeDiv(sales,paid));
+
+    $('mmsg').className='msg ok';
+    $('mmsg').textContent='Listo ✔️';
+  }catch(e){
+    $('mmsg').className='msg err';
+    $('mmsg').textContent='Error: '+(e?.message||String(e));
+  }
+};
+</script>
+</body>
+</html>
