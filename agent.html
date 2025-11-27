@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Agente — Turnos & Métricas (MTD)</title>
+<title>Sales never sleep — Turnos & Métricas</title>
 <style>
 :root{
   --bg:#030712;
@@ -19,6 +19,7 @@
 *{box-sizing:border-box}
 body{
   margin:0;
+  min-height:100vh;
   background:
     radial-gradient(900px 500px at 0% 0%,rgba(250,204,21,.20),transparent 60%),
     radial-gradient(900px 600px at 100% 0%,rgba(34,197,94,.16),transparent 60%),
@@ -26,14 +27,35 @@ body{
   color:var(--text);
   font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
 }
-.wrap{max-width:1120px;margin:0 auto;padding:28px}
-header{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:14px}
-h1{margin:0;font-size:22px;font-weight:900}
+.wrap{
+  width:100%;
+  padding:24px 18px 40px;
+}
+header{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:16px;
+  margin-bottom:14px;
+}
+h1{
+  margin:0;
+  font-size:30px;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.16em;
+}
+.hero-sub{
+  margin-top:6px;
+  font-size:13px;
+  color:#e5e7eb;
+}
 .sub{color:var(--mut);font-size:12px}
 
 /* Banner Black Friday */
 .bf-banner{
-  margin-bottom:16px;
+  width:100%;
+  margin:14px 0 18px 0;
   padding:12px 16px;
   border-radius:14px;
   border:1px dashed rgba(250,204,21,.7);
@@ -95,6 +117,7 @@ h1{margin:0;font-size:22px;font-weight:900}
 
 /* Cards */
 .card{
+  width:100%;
   background:
     radial-gradient(circle at 0 0,rgba(250,204,21,.06),transparent 55%),
     radial-gradient(circle at 100% 0,rgba(34,197,94,.08),transparent 55%),
@@ -133,7 +156,11 @@ h1{margin:0;font-size:22px;font-weight:900}
 }
 
 /* Horas */
-.hours{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:10px}
+.hours{
+  display:grid;
+  grid-template-columns:repeat(8,minmax(0,1fr));
+  gap:10px;
+}
 .hbtn{
   height:44px;
   display:flex;
@@ -148,6 +175,7 @@ h1{margin:0;font-size:22px;font-weight:900}
   font-size:13px;
   color:#e5e7eb;
   box-shadow:0 6px 14px rgba(0,0,0,.6);
+  position:relative;
 }
 .hbtn.on{
   background:linear-gradient(180deg,rgba(250,204,21,.35),rgba(34,197,94,.45));
@@ -254,6 +282,24 @@ th{background:#020617;text-align:left}
 .list{font-size:14px;line-height:1.7;margin:8px 0 14px 0;color:#d1d5db}
 .row{display:flex;gap:10px;justify-content:flex-end}
 
+/* Monedas */
+.coin{
+  position:fixed;
+  width:18px;
+  height:18px;
+  border-radius:50%;
+  background:
+    radial-gradient(circle at 30% 30%,#fff7c2,#facc15 50%,#eab308 75%,#92400e);
+  box-shadow:0 6px 14px rgba(0,0,0,.8);
+  pointer-events:none;
+  animation:coin-pop 800ms ease-out forwards;
+}
+@keyframes coin-pop{
+  0%{transform:translate3d(0,0,0) scale(.5);opacity:0;}
+  25%{opacity:1;}
+  100%{transform:translate3d(var(--dx,-10px),-80px,0) scale(1.1);opacity:0;}
+}
+
 @media (max-width:960px){
   .grid5{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
@@ -269,7 +315,8 @@ th{background:#020617;text-align:left}
 <div class="wrap">
   <header>
     <div>
-      <h1>Agente — Turnos & Métricas (MTD)</h1>
+      <h1>Sales never sleep</h1>
+      <div class="hero-sub">Turnos & métricas para la operación más despierta del año.</div>
       <div class="sub">Agenda (mín 3h/día, Black Friday 24/7 en días especiales) y consulta tu acumulado mensual.</div>
     </div>
     <div class="sub">Capacidad fija: <b>30</b> msgs/h</div>
@@ -454,7 +501,21 @@ function is24hDay(dateStr){
 function getHoursForDay(dateStr){
   return is24hDay(dateStr)?FULLDAY_HOURS:NORMAL_HOURS;
 }
-/* --- fin configuración horarios --- */
+
+/* --- Monedas --- */
+function spawnCoins(x,y){
+  const howMany=4+Math.floor(Math.random()*3);
+  for(let i=0;i<howMany;i++){
+    const coin=document.createElement('div');
+    coin.className='coin';
+    const dx=(Math.random()*60-30).toFixed(0)+'px';
+    coin.style.setProperty('--dx',dx);
+    coin.style.left=(x+Math.random()*10-5)+'px';
+    coin.style.top=(y+Math.random()*10-5)+'px';
+    document.body.appendChild(coin);
+    setTimeout(()=>coin.remove(),800);
+  }
+}
 
 let activeDay=null;
 const selectedDays=[];
@@ -549,9 +610,10 @@ function paintHours(){
     d.className='hbtn'+(sel.has(h)?' on':'');
     const label=String(h).padStart(2,'0')+":00";
     d.textContent=label;
-    d.onclick=()=>{
+    d.onclick=(ev)=>{
       sel.has(h)?sel.delete(h):sel.add(h);
       paintHours();
+      spawnCoins(ev.clientX,ev.clientY);
     };
     box.appendChild(d);
   });
@@ -616,4 +678,112 @@ $('save').onclick=async ()=>{
 };
 
 $('cancelConfirm').onclick=()=>showConfirm(false);
-function showConfirm(f){ $('confirmModal').style.display
+function showConfirm(f){ $('confirmModal').style.display=f?'flex':'none'; }
+
+async function loadMyShifts(){
+  const email=($('email').value||'').trim();
+  if(!email) return;
+  const d=new Date();
+  const ym=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
+  const {data,error}=await sb
+    .from('bookings')
+    .select('date,hour,channel,email')
+    .ilike('email',email)
+    .gte('date',ym+'-01')
+    .lte('date',ym+'-31')
+    .order('date')
+    .order('hour');
+
+  const tb=$('myTbl').querySelector('tbody');
+  tb.innerHTML='';
+  if(error){
+    tb.innerHTML=`<tr><td colspan="3">Error: ${error.message}</td></tr>`;
+    return;
+  }
+  (data||[]).forEach(r=>{
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td>${r.date}</td><td>${String(r.hour).padStart(2,'0')}:00</td><td>${r.channel||'—'}</td>`;
+    tb.appendChild(tr);
+  });
+}
+$('email').addEventListener('change', loadMyShifts);
+$('viewMyShifts').onclick = loadMyShifts;
+
+// --- Métricas MTD (adaptado a tu CSV real) ---
+function toNum(v){
+  const n=Number(String(v).replace(/[^0-9.-]/g,''));
+  return isFinite(n)?n:0;
+}
+async function fetchCSV(url){
+  const r=await fetch(url,{cache:"no-store"});
+  if(!r.ok) throw new Error("HTTP "+r.status);
+  const t=await r.text();
+  return new Promise((res,rej)=>Papa.parse(t,{header:true,skipEmptyLines:true,complete:x=>res(x.data),error:rej}));
+}
+function pct(x){return (x*100).toFixed(1)+'%';}
+function safeDiv(a,b){return b>0?a/b:0;}
+function findHeader(headers,needle){
+  const n=needle.toLowerCase();
+  return headers.find(h=>h.toLowerCase().includes(n)) || null;
+}
+
+$('mload').onclick=async ()=>{
+  const month=($('month').value||'').trim();
+  const email=($('memail').value||'').trim().toLowerCase();
+  if(!month||!email){
+    $('mmsg').className='msg err';
+    $('mmsg').textContent='Escribe mes y email.';
+    return;
+  }
+  $('mmsg').className='msg mut';
+  $('mmsg').textContent='Cargando…';
+  try{
+    const url=`${CSV_BASE_URL}/${month}.csv`;
+    const rows=await fetchCSV(url);
+    if(!rows.length) throw new Error('CSV sin filas');
+    const headers=Object.keys(rows[0]||{});
+
+    const emailCol=headers.find(h=>/email/i.test(h)) || headers[0];
+    const mine=rows.filter(r=>String(r[emailCol]||'').toLowerCase()===email);
+    if(!mine.length){
+      $('mmsg').className='msg err';
+      $('mmsg').textContent='No hay registros para ese email.';
+      return;
+    }
+
+    const colAssigned  = findHeader(headers,'conv. gestionadas');
+    const colClosed    = findHeader(headers,'conv. cerrad');
+    const colSent      = findHeader(headers,'usuarios a quien se envio link de pago');
+    const colTxn       = findHeader(headers,'txn atribuida');
+
+    const sum = (col)=> mine.reduce((a,r)=>a+toNum(r[col]??0),0);
+
+    const assigned = colAssigned ? sum(colAssigned) : 0;
+    const attended = assigned;
+    const closed   = colClosed ? sum(colClosed) : 0;
+    const sent     = colSent ? sum(colSent) : 0;
+    const paid     = colTxn ? sum(colTxn) : 0;
+    const sales    = paid;
+
+    $('k_assigned').textContent=assigned;
+    $('k_attended').textContent=attended;
+    $('k_closed').textContent=closed;
+    $('k_sent').textContent=sent;
+    $('k_paid').textContent=paid;
+    $('k_sales').textContent=sales;
+
+    $('k_cvr1').textContent=pct(safeDiv(sales,attended));
+    $('k_cvr2').textContent=pct(safeDiv(sales,sent));
+    $('k_cvr3').textContent=pct(safeDiv(sales,paid));
+
+    $('mmsg').className='msg ok';
+    $('mmsg').textContent='Listo ✔️';
+  }catch(e){
+    $('mmsg').className='msg err';
+    $('mmsg').textContent='Error: '+(e?.message||String(e));
+  }
+};
+</script>
+</body>
+</html>
+
