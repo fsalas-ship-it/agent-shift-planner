@@ -3,391 +3,312 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Admin — Plan manual + Roster por hora (editar/borrar)</title>
+<title>Admin — Roster por hora (BF 7am–3am)</title>
 <style>
-:root{--bg:#05060a;--panel:#0b0f13;--edge:#161b21;--text:#e5e7eb;--mut:#9ca3af;--acc:#00e676;--acc2:#00c853;--warn:#f59e0b;--bad:#ef4444}
+:root{
+  --bg:#020617;
+  --panel:#0b1120;
+  --edge:#1f2933;
+  --text:#e5e7eb;
+  --mut:#9ca3af;
+  --acc:#22c55e;
+  --bad:#ef4444;
+}
 *{box-sizing:border-box}
-body{margin:0;background:radial-gradient(1200px 600px at 10% -10%, rgba(0,230,118,.08),transparent 60%),var(--bg);color:var(--text);font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial}
-.wrap{max-width:1220px;margin:0 auto;padding:28px}
-h1{margin:0 0 6px 0;font-size:22px;font-weight:900}
-.sub{color:var(--mut);font-size:12px;margin-bottom:14px}
-.card{background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,0));border:1px solid var(--edge);border-radius:16px;padding:18px;margin-bottom:16px}
-.grid4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
-.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
-.lbl{font-size:12px;color:var(--mut);margin-bottom:6px}
-.inp{background:#0b0f13;color:var(--text);border:1px solid #1c232a;border-radius:12px;padding:10px;width:100%}
-.btn{background:linear-gradient(180deg,var(--acc),var(--acc2));color:#062e15;font-weight:900;border:none;border-radius:12px;padding:10px 14px;cursor:pointer}
-.btn.sec{background:#11151a;color:#cbd5e1;border:1px solid #202832}
-.table{margin-top:14px;border-collapse:collapse;width:100%}
-th,td{border:1px solid #1f2730;padding:8px 10px;font-size:13px}
-th{background:#0e1318;text-align:left}
-.badge{padding:3px 8px;border-radius:999px;font-size:12px;border:1px solid #24303a}
-.ok{background:rgba(34,197,94,.12);border-color:#22c55e;color:#c8f7d3}
-.mid{background:rgba(245,158,11,.12);border-color:#f59e0b;color:#fde3b0}
-.no{background:rgba(239,68,68,.12);border-color:#ef4444;color:#fecaca}
-input.plan{width:100px;background:#0b0f13;color:#e5e7eb;border:1px solid #27303a;border-radius:10px;padding:6px 8px;text-align:right}
-.small{font-size:12px;color:#9ca3af}
-/* roster */
-.roster{margin-top:12px;border-top:1px solid #1f2730}
-.hr{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px dashed #1f2730}
-.hr h3{margin:0;font-size:14px;color:#cbd5e1}
-.pills{display:flex;gap:8px;flex-wrap:wrap}
-.pill{display:flex;align-items:center;gap:8px;padding:6px 10px;border:1px solid #2a3440;background:#0c1116;border-radius:999px;font-size:12px}
-.pill .who{color:#e5e7eb}
-.icon{cursor:pointer;border:none;background:transparent;color:#9fb3c8}
-.icon:hover{color:#e5f2ff}
-.modal{position:fixed;inset:0;background:rgba(0,0,0,.45);display:none;align-items:center;justify-content:center}
-.box{width:min(520px,92%);background:#0b0f13;border:1px solid #223;border-radius:14px;padding:16px}
-.box h4{margin:0 0 8px 0}
-.row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:8px 0}
-.box .actions{display:flex;gap:10px;justify-content:flex-end;margin-top:8px}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+}
+.wrap{
+  max-width:960px;
+  margin:0 auto;
+  padding:24px 16px 40px;
+}
+h1{
+  margin:0 0 4px 0;
+  font-size:22px;
+  font-weight:800;
+}
+.sub{
+  font-size:12px;
+  color:var(--mut);
+  margin-bottom:16px;
+}
+.card{
+  background:#020617;
+  border:1px solid var(--edge);
+  border-radius:14px;
+  padding:16px;
+  margin-bottom:16px;
+}
+.grid2{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:10px;
+}
+.lbl{
+  font-size:12px;
+  color:var(--mut);
+  margin-bottom:4px;
+}
+.inp{
+  width:100%;
+  padding:8px 10px;
+  border-radius:10px;
+  border:1px solid #1f2933;
+  background:#020617;
+  color:var(--text);
+  font-size:13px;
+}
+.btn{
+  padding:8px 12px;
+  border-radius:10px;
+  border:none;
+  cursor:pointer;
+  font-size:13px;
+  font-weight:600;
+}
+.btn.pri{
+  background:linear-gradient(180deg,#4ade80,#16a34a);
+  color:#052e16;
+}
+.btn.sec{
+  background:#020617;
+  color:#e5e7eb;
+  border:1px solid #1f2933;
+}
+.msg{
+  font-size:12px;
+  margin-top:6px;
+}
+.msg.err{color:var(--bad)}
+.msg.ok{color:#22c55e}
+.msg.mut{color:var(--mut)}
+
+.roster{
+  margin-top:8px;
+  border-top:1px solid #1f2933;
+}
+.hr{
+  padding:10px 0;
+  border-bottom:1px dashed #1f2933;
+}
+.hr-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:6px;
+}
+.hr-head h3{
+  margin:0;
+  font-size:14px;
+}
+.hr-head span{
+  font-size:12px;
+  color:var(--mut);
+}
+.pills{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+}
+.pill{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  padding:4px 8px;
+  border-radius:999px;
+  border:1px solid #24303a;
+  background:#020617;
+  font-size:12px;
+}
+.pill .who{
+  color:#e5e7eb;
+}
+.pill .meta{
+  color:#9ca3af;
+}
+.pill button{
+  border:none;
+  background:transparent;
+  cursor:pointer;
+  font-size:12px;
+  color:#9ca3af;
+}
+.pill button:hover{
+  color:#fecaca;
+}
+
+@media(max-width:640px){
+  .grid2{grid-template-columns:minmax(0,1fr)}
+}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.43.1/dist/umd/supabase.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 </head>
 <body>
 <div class="wrap">
-  <h1>Admin — plan manual + roster por hora</h1>
-  <div class="sub">Escribe el plan directo en la tabla. Abajo verás los asesores por hora (con opciones para borrar o editar su turno).</div>
+  <h1>Admin — Roster por hora</h1>
+  <div class="sub">
+    Vista simple para Black Friday. Muestra todos los turnos entre <b>7:00 a. m.</b> y <b>3:00 a. m.</b> del día siguiente.
+  </div>
 
   <div class="card">
-    <div class="grid4">
-      <div><div class="lbl">Fecha</div><input class="inp" type="date" id="date"></div>
-      <div><div class="lbl">Capacidad por asesor (msgs/h)</div><input class="inp" id="cap" value="30"></div>
-      <div><div class="lbl">Objetivo respuestas/h (opcional)</div><input class="inp" id="target" value="0"></div>
-      <div style="align-self:end;display:flex;gap:8px;flex-wrap:wrap">
-        <button class="btn" id="refresh">Actualizar turnos</button>
-        <button class="btn sec" id="export">Exportar CSV</button>
+    <div class="grid2">
+      <div>
+        <div class="lbl">Fecha</div>
+        <input class="inp" type="date" id="date">
+      </div>
+      <div>
+        <div class="lbl">&nbsp;</div>
+        <button class="btn pri" id="loadBtn">Cargar roster</button>
       </div>
     </div>
-    <div class="grid3" style="margin-top:12px">
-      <div><div class="lbl">% retorno</div><input class="inp" id="retPct" type="number" min="5" max="50" step="1" value="10"></div>
-      <div><div class="lbl">Delay (h)</div><input class="inp" id="delayH" type="number" min="0" max="6" step="1" value="1"></div>
-      <div><div class="lbl">Spread (horas)</div><input class="inp" id="spreadH" type="number" min="1" max="8" step="1" value="4"></div>
-    </div>
-    <div class="small" style="margin-top:6px">Distribución: 40% en la 1ª hora y el resto parejo en las siguientes.</div>
+    <div class="msg mut" id="statusMsg">Selecciona un día y carga el roster.</div>
   </div>
 
   <div class="card">
-    <canvas id="chart" height="120"></canvas>
-  </div>
-
-  <div class="card">
-    <table class="table" id="tbl">
-      <thead>
-        <tr>
-          <th>Hora</th><th>Mensajes plan</th><th>Esperado (retorno)</th>
-          <th># Asesores</th><th>Capacidad</th><th>Objetivo</th><th>Status</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-  </div>
-
-  <div class="card">
-    <h2 style="margin:0 0 8px 0;font-size:18px">Asesores por hora (puedes borrar o editar)</h2>
+    <h2 style="margin:0 0 8px 0;font-size:16px">Asesores por hora</h2>
     <div id="roster" class="roster"></div>
   </div>
 </div>
 
-<!-- Modal edición -->
-<div class="modal" id="editModal">
-  <div class="box">
-    <h4>Editar turno</h4>
-    <div class="row">
-      <div>
-        <div class="lbl">Hora</div>
-        <select class="inp" id="editHour"></select>
-      </div>
-      <div>
-        <div class="lbl">Canal</div>
-        <select class="inp" id="editChannel">
-          <option value="mensajes">mensajes</option>
-          <option value="llamadas">llamadas</option>
-          <option value="ambos">ambos</option>
-        </select>
-      </div>
-    </div>
-    <div class="row">
-      <div>
-        <div class="lbl">Capacidad (msgs/h)</div>
-        <input class="inp" id="editCap" type="number" min="0" value="30">
-      </div>
-      <div>
-        <div class="lbl">Email (solo lectura)</div>
-        <input class="inp" id="editEmail" disabled>
-      </div>
-    </div>
-    <div class="actions">
-      <button class="btn sec" id="editCancel">Cancelar</button>
-      <button class="btn" id="editSave">Guardar</button>
-    </div>
-  </div>
-</div>
-
 <script>
+// Config Supabase (misma que en tu agente)
 const SUPABASE_URL = "https://wbplsmimcuphytdfjapz.supabase.co";
 const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndicGxzbWltY3VwaHl0ZGZqYXB6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI4NTA3NzQsImV4cCI6MjA3ODQyNjc3NH0.1iC_zrG5FU2jCv_4qzqf8Si8t3cknA705ioPwOz3zSY";
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, { auth:{ persistSession:false }});
 
-// Rango extendido 7:00 → 3:00 del día siguiente
+// Horario BF extendido: 7am → 23pm y 0–3am
 const HOURS = [7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,0,1,2,3];
 
-let plan={}, expected={}, scheduled={}, capacity={}, rosterByHour={};
-let chart;
+const $ = id => document.getElementById(id);
 
-(function(){
-  const d=new Date();
-  const iso=new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,10);
-  document.getElementById('date').value=iso;
-  // fill edit hour options
-  const sel=document.getElementById('editHour');
-  HOURS.forEach(h=>{
-    const o=document.createElement('option');
-    o.value=h;
-    o.text=String(h).padStart(2,'0')+':00';
-    sel.appendChild(o);
-  });
+// set default date = hoy
+(function initDate(){
+  const d = new Date();
+  const iso = new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,10);
+  $('date').value = iso;
 })();
 
-document.getElementById('refresh').onclick=loadBookings;
-document.getElementById('export').onclick=()=>exportCsv(rowsForTable(),'dia_'+document.getElementById('date').value+'.csv');
-['retPct','delayH','spreadH','cap','target'].forEach(id=>{
-  document.getElementById(id).addEventListener('input',()=>{
-    buildExpected();
-    drawAll();
-  });
-});
+$('loadBtn').onclick = loadRoster;
 
-function initPlan(){ plan={}; HOURS.forEach(h=>plan[h]=0); }
-initPlan();
-
-function onPlanChange(){ buildExpected(); drawAll(); }
-
-async function loadBookings(){
-  const day=document.getElementById('date').value;
-  const {data,error}=await sb.from('bookings')
-    .select('date,hour,name,email,channel,cap_msg')
-    .eq('date',day)
-    .order('hour',{ascending:true});
-
-  scheduled={}; capacity={}; rosterByHour={};
-  HOURS.forEach(h=>{scheduled[h]=0; capacity[h]=0; rosterByHour[h]=[];});
-
-  if(error){
-    alert('Error turnos: '+error.message);
-    drawAll();
+async function loadRoster(){
+  const day = ($('date').value || '').trim();
+  const status = $('statusMsg');
+  const box = $('roster');
+  if(!day){
+    status.className = 'msg err';
+    status.textContent = 'Selecciona una fecha.';
     return;
   }
 
-  const uniqMap=new Map();
-  (data||[]).forEach(r=>{
-    const h=r.hour;
-    if(!HOURS.includes(h)) return;
-    rosterByHour[h].push(r);
-    const key=h+'|'+(r.email||'').toLowerCase();
-    if(!uniqMap.has(key)){
-      uniqMap.set(key,true);
-      scheduled[h]++;
-    }
-  });
+  status.className = 'msg mut';
+  status.textContent = 'Cargando turnos...';
+  box.innerHTML = '';
 
-  HOURS.forEach(h=>{
-    capacity[h]=scheduled[h]*(Number(document.getElementById('cap').value)||30);
-  });
+  try{
+    const { data, error } = await sb
+      .from('bookings')
+      .select('date,hour,name,email,channel,cap_msg')
+      .eq('date', day)
+      .order('hour', { ascending:true });
 
-  drawAll();
-  drawRoster();
-}
-
-function buildExpected(){
-  expected={}; HOURS.forEach(h=>expected[h]=0);
-  const pct   = Math.max(5,Math.min(50,Number(document.getElementById('retPct').value)||10))/100;
-  const delay = Math.max(0,Math.min(6,Number(document.getElementById('delayH').value)||1));
-  const spread= Math.max(1,Math.min(8,Number(document.getElementById('spreadH').value)||4)); // ← aquí estaba el fallo
-
-  HOURS.forEach(h=>{
-    const resp = Math.round(plan[h]*pct);
-    const first= Math.round(resp*0.4);
-    const rest = resp-first;
-
-    const h1=h+delay;
-    if(HOURS.includes(h1)) expected[h1]=(expected[h1]||0)+first;
-
-    for(let i=1;i<spread;i++){
-      const to=h+delay+i;
-      if(!HOURS.includes(to)) continue;
-      const portion=Math.round(rest/(spread-1));
-      expected[to]=(expected[to]||0)+portion;
-    }
-  });
-}
-
-function rowsForTable(){
-  const goal=Number(document.getElementById('target').value)||0;
-  return HOURS.map(h=>{
-    const status = goal>0
-      ? (capacity[h]>=goal ? 'OK' : (capacity[h]>=goal*0.7 ? 'Medio' : 'Bajo'))
-      : (expected[h]<=capacity[h] ? 'OK' : 'Bajo');
-    return {
-      hora:`${String(h).padStart(2,'0')}:00`,
-      plan:plan[h]||0,
-      esperado:expected[h]||0,
-      asesores:scheduled[h]||0,
-      capacidad:capacity[h]||0,
-      objetivo:goal||'—',
-      status
-    };
-  });
-}
-
-function drawTable(){
-  const tb=document.querySelector('#tbl tbody'); tb.innerHTML='';
-  HOURS.forEach(h=>{
-    const tr=document.createElement('tr'); tr.dataset.h=h;
-    tr.innerHTML=`
-      <td>${String(h).padStart(2,'0')}:00</td>
-      <td><input type="number" min="0" class="plan" value="${plan[h]||0}"></td>
-      <td class="exp">0</td>
-      <td class="sch">0</td>
-      <td class="cap">0</td>
-      <td class="goal">—</td>
-      <td class="st"><span class="badge no">Bajo</span></td>`;
-    tb.appendChild(tr);
-    tr.querySelector('input.plan').addEventListener('input',(e)=>{
-      const v=Math.max(0,parseInt(e.target.value||'0',10)||0);
-      plan[h]=v; onPlanChange();
-    });
-  });
-  applyRows();
-}
-
-function applyRows(){
-  const goal=Number(document.getElementById('target').value)||0;
-  document.querySelectorAll('#tbl tbody tr').forEach(tr=>{
-    const h=Number(tr.dataset.h);
-    tr.querySelector('.exp').textContent=expected[h]||0;
-    tr.querySelector('.sch').textContent=scheduled[h]||0;
-    tr.querySelector('.cap').textContent=capacity[h]||0;
-    tr.querySelector('.goal').textContent=goal||'—';
-    const ok = goal>0 ? (capacity[h]>=goal) : (expected[h]<=capacity[h]);
-    const mid= goal>0 ? (!ok && capacity[h]>=goal*0.7) : false;
-    const badge=tr.querySelector('.st .badge');
-    badge.className='badge '+(ok?'ok':(mid?'mid':'no'));
-    badge.textContent= ok?'OK':(mid?'Medio':'Bajo');
-  });
-}
-
-function drawChart(){
-  const ctx=document.getElementById('chart').getContext('2d');
-  const labels=HOURS.map(h=>`${String(h).padStart(2,'0')}:00`);
-  const dataExpected=HOURS.map(h=>expected[h]||0);
-  const dataCapacity=HOURS.map(h=>capacity[h]||0);
-  if(chart) chart.destroy();
-  chart=new Chart(ctx,{
-    type:'line',
-    data:{labels,datasets:[
-      {label:'Esperado',data:dataExpected},
-      {label:'Capacidad',data:dataCapacity}
-    ]},
-    options:{responsive:true,plugins:{legend:{position:'top'},tooltip:{mode:'index',intersect:false}},interaction:{mode:'nearest',intersect:false}}
-  });
-}
-
-function drawAll(){ applyRows(); drawChart(); }
-
-function exportCsv(arr,name){
-  if(!arr.length) return alert('Nada para exportar');
-  const keys=Object.keys(arr[0]);
-  const esc=v=>`"${String(v).replace(/"/g,'""')}"`;
-  const csv=[keys.join(','),...arr.map(r=>keys.map(k=>esc(r[k]??'')).join(','))].join('\n');
-  const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});
-  const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=name; a.click();
-}
-
-/* ------- ROSTER ------- */
-function drawRoster(){
-  const box=document.getElementById('roster'); box.innerHTML='';
-  HOURS.forEach(h=>{
-    const people = rosterByHour[h]||[];
-    const hr=document.createElement('div'); hr.className='hr';
-    hr.innerHTML=`<h3>${String(h).padStart(2,'0')}:00 — ${people.length} persona(s)</h3>`;
-    const pills=document.createElement('div'); pills.className='pills';
-    people.forEach(p=>{
-      const el=document.createElement('div'); el.className='pill';
-      const who = `${p.name||'—'} · ${p.email||''}${p.channel?(' · '+p.channel):''}`;
-      el.innerHTML=`<span class="who">${who}</span>
-        <button class="icon" title="Editar" data-edit='${h}|${(p.email||'').toLowerCase()}'>✏️</button>
-        <button class="icon" title="Borrar" data-del='${h}|${(p.email||'').toLowerCase()}'>🗑️</button>`;
-      pills.appendChild(el);
-    });
-    hr.appendChild(pills); box.appendChild(hr);
-  });
-
-  box.querySelectorAll('[data-del]').forEach(b=> b.onclick = ()=>{
-    const day=document.getElementById('date').value;
-    const [hour,email]=b.getAttribute('data-del').split('|');
-    if(!confirm(`Borrar turno de ${email} a las ${hour}:00 para ${day}?`)) return;
-    sb.from('bookings').delete()
-      .eq('date',day)
-      .eq('hour',Number(hour))
-      .ilike('email',email)
-      .then(({error})=>{
-        if(error){ alert('Error al borrar (RLS?): '+error.message); return; }
-        loadBookings();
-      });
-  });
-
-  box.querySelectorAll('[data-edit]').forEach(b=> b.onclick = ()=>{
-    const day=document.getElementById('date').value;
-    const [hour,email]=b.getAttribute('data-edit').split('|');
-    const person = (rosterByHour[Number(hour)]||[]).find(
-      x=>String(x.email||'').toLowerCase()===email
-    );
-    if(!person) return;
-    openEdit(day, Number(hour), person);
-  });
-}
-
-function openEdit(day, hour, row){
-  document.getElementById('editEmail').value=row.email||'';
-  document.getElementById('editHour').value=hour;
-  document.getElementById('editChannel').value=row.channel||'mensajes';
-  document.getElementById('editCap').value=row.cap_msg||30;
-  const modal=document.getElementById('editModal');
-  modal.style.display='flex';
-
-  document.getElementById('editCancel').onclick=()=> modal.style.display='none';
-  document.getElementById('editSave').onclick=async ()=>{
-    const newHour=Number(document.getElementById('editHour').value);
-    const newChan=document.getElementById('editChannel').value;
-    const newCap=Number(document.getElementById('editCap').value)||30;
-    const {error} = await sb.from('bookings')
-      .update({hour:newHour,channel:newChan,cap_msg:newCap})
-      .eq('date',day)
-      .eq('hour',hour)
-      .eq('email',row.email);
     if(error){
-      alert('Error al editar (RLS/conflicto): '+error.message);
+      status.className = 'msg err';
+      status.textContent = 'Error al cargar: ' + error.message;
       return;
     }
-    modal.style.display='none';
-    loadBookings();
-  };
-}
 
-// Inicial
-function resetStructures(){
-  plan={}; expected={}; scheduled={}; capacity={}; rosterByHour={};
-  HOURS.forEach(h=>{
-    plan[h]=0; expected[h]=0; scheduled[h]=0; capacity[h]=0; rosterByHour[h]=[];
-  });
+    // Agrupar por hora
+    const byHour = {};
+    HOURS.forEach(h => byHour[h] = []);
+    (data || []).forEach(row => {
+      const h = Number(row.hour);
+      if(!byHour.hasOwnProperty(h)) return;
+      byHour[h].push(row);
+    });
+
+    // Render
+    HOURS.forEach(h => {
+      const people = byHour[h] || [];
+      const hrDiv = document.createElement('div');
+      hrDiv.className = 'hr';
+
+      const head = document.createElement('div');
+      head.className = 'hr-head';
+      const hLabel = String(h).padStart(2,'0') + ':00';
+
+      const count = people.length;
+      head.innerHTML = `
+        <h3>${hLabel}</h3>
+        <span>${count} asesor(es)</span>
+      `;
+      hrDiv.appendChild(head);
+
+      const pills = document.createElement('div');
+      pills.className = 'pills';
+
+      if(count === 0){
+        const empty = document.createElement('div');
+        empty.className = 'pill';
+        empty.innerHTML = '<span class="meta">Sin turnos en esta hora.</span>';
+        pills.appendChild(empty);
+      }else{
+        people.forEach(p => {
+          const pill = document.createElement('div');
+          pill.className = 'pill';
+          const who = (p.name || '—');
+          const mail = (p.email || '');
+          const chan = (p.channel || '—');
+          const cap  = (p.cap_msg != null ? p.cap_msg : '—');
+
+          pill.innerHTML = `
+            <span class="who">${who}</span>
+            <span class="meta">· ${mail} · ${chan} · cap: ${cap}</span>
+            <button data-del="${h}|${mail.toLowerCase()}">🗑️</button>
+          `;
+          pills.appendChild(pill);
+        });
+      }
+
+      hrDiv.appendChild(pills);
+      box.appendChild(hrDiv);
+    });
+
+    status.className = 'msg ok';
+    status.textContent = 'Roster cargado para ' + day + '.';
+
+    // wire delete buttons
+    box.querySelectorAll('button[data-del]').forEach(btn => {
+      btn.onclick = async () => {
+        const val = btn.getAttribute('data-del');
+        const [hourStr, email] = val.split('|');
+        const hour = Number(hourStr);
+        if(!confirm(`¿Borrar turno de ${email} a las ${String(hour).padStart(2,'0')}:00 para ${day}?`)){
+          return;
+        }
+        const { error: delError } = await sb
+          .from('bookings')
+          .delete()
+          .eq('date', day)
+          .eq('hour', hour)
+          .ilike('email', email);
+
+        if(delError){
+          alert('Error al borrar: ' + delError.message);
+          return;
+        }
+        loadRoster(); // recargar después de borrar
+      };
+    });
+
+  }catch(e){
+    status.className = 'msg err';
+    status.textContent = 'Excepción: ' + (e?.message || String(e));
+  }
 }
-resetStructures();
-drawTable();
-buildExpected();
-drawAll();
-loadBookings();
 </script>
 </body>
 </html>
