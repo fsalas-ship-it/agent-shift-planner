@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Admin — Roster por hora (BF 7am–3am)</title>
+<title>Admin — Dimensionamiento por hora (BF 7am–3am)</title>
 <style>
 :root{
   --bg:#020617;
@@ -13,6 +13,7 @@
   --mut:#9ca3af;
   --acc:#22c55e;
   --bad:#ef4444;
+  --mid:#f59e0b;
 }
 *{box-sizing:border-box}
 body{
@@ -22,7 +23,7 @@ body{
   font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
 }
 .wrap{
-  max-width:960px;
+  max-width:1100px;
   margin:0 auto;
   padding:24px 16px 40px;
 }
@@ -43,9 +44,9 @@ h1{
   padding:16px;
   margin-bottom:16px;
 }
-.grid2{
+.grid3{
   display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
+  grid-template-columns:repeat(3,minmax(0,1fr));
   gap:10px;
 }
 .lbl{
@@ -87,6 +88,44 @@ h1{
 .msg.ok{color:#22c55e}
 .msg.mut{color:var(--mut)}
 
+.table{
+  width:100%;
+  border-collapse:collapse;
+  margin-top:8px;
+  font-size:13px;
+}
+th,td{
+  border:1px solid #1f2933;
+  padding:6px 8px;
+}
+th{
+  background:#020617;
+  text-align:left;
+}
+.badge{
+  display:inline-block;
+  padding:3px 8px;
+  border-radius:999px;
+  font-size:11px;
+  border:1px solid transparent;
+}
+.badge.ok{
+  border-color:#22c55e;
+  background:rgba(34,197,94,.12);
+  color:#bbf7d0;
+}
+.badge.mid{
+  border-color:#f59e0b;
+  background:rgba(245,158,11,.12);
+  color:#fde68a;
+}
+.badge.low{
+  border-color:#ef4444;
+  background:rgba(239,68,68,.12);
+  color:#fecaca;
+}
+
+/* Roster */
 .roster{
   margin-top:8px;
   border-top:1px solid #1f2933;
@@ -124,12 +163,8 @@ h1{
   background:#020617;
   font-size:12px;
 }
-.pill .who{
-  color:#e5e7eb;
-}
-.pill .meta{
-  color:#9ca3af;
-}
+.pill .who{color:#e5e7eb}
+.pill .meta{color:#9ca3af}
 .pill button{
   border:none;
   background:transparent;
@@ -137,67 +172,96 @@ h1{
   font-size:12px;
   color:#9ca3af;
 }
-.pill button:hover{
-  color:#fecaca;
-}
+.pill button:hover{color:#fecaca}
 
-@media(max-width:640px){
-  .grid2{grid-template-columns:minmax(0,1fr)}
+@media(max-width:720px){
+  .grid3{grid-template-columns:minmax(0,1fr)}
 }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.43.1/dist/umd/supabase.min.js"></script>
 </head>
 <body>
 <div class="wrap">
-  <h1>Admin — Roster por hora</h1>
+  <h1>Admin — Dimensionamiento por hora</h1>
   <div class="sub">
-    Vista simple para Black Friday. Muestra todos los turnos entre <b>7:00 a. m.</b> y <b>3:00 a. m.</b> del día siguiente.
+    Black Friday: visualiza <b># de asesores</b> y <b>capacidad (msgs/h)</b> por hora, de <b>7:00 a. m.</b> a <b>3:00 a. m.</b> del siguiente día.
   </div>
 
+  <!-- Filtros / parámetros -->
   <div class="card">
-    <div class="grid2">
+    <div class="grid3">
       <div>
         <div class="lbl">Fecha</div>
         <input class="inp" type="date" id="date">
       </div>
       <div>
-        <div class="lbl">&nbsp;</div>
-        <button class="btn pri" id="loadBtn">Cargar roster</button>
+        <div class="lbl">Capacidad por asesor (msgs/h)</div>
+        <input class="inp" type="number" id="capPer" value="30" min="1">
+      </div>
+      <div>
+        <div class="lbl">Objetivo respuestas/h</div>
+        <input class="inp" type="number" id="goal" value="0" min="0">
       </div>
     </div>
-    <div class="msg mut" id="statusMsg">Selecciona un día y carga el roster.</div>
+    <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+      <button class="btn pri" id="loadBtn">Cargar datos</button>
+      <button class="btn sec" id="reloadBtn">Refrescar</button>
+      <span class="msg mut" id="statusMsg">Selecciona una fecha y carga el panel.</span>
+    </div>
   </div>
 
+  <!-- Tabla de dimensionamiento -->
   <div class="card">
-    <h2 style="margin:0 0 8px 0;font-size:16px">Asesores por hora</h2>
+    <h2 style="margin:0 0 8px 0;font-size:16px">Capacidad por hora</h2>
+    <table class="table" id="tbl">
+      <thead>
+        <tr>
+          <th>Hora</th>
+          <th># Asesores</th>
+          <th>Capacidad (msgs/h)</th>
+          <th>Objetivo</th>
+          <th>Estado</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <!-- Roster detallado -->
+  <div class="card">
+    <h2 style="margin:0 0 8px 0;font-size:16px">Detalle de asesores por hora</h2>
     <div id="roster" class="roster"></div>
   </div>
 </div>
 
 <script>
-// Config Supabase (misma que en tu agente)
+// Config Supabase (misma que el panel de agentes)
 const SUPABASE_URL = "https://wbplsmimcuphytdfjapz.supabase.co";
 const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndicGxzbWltY3VwaHl0ZGZqYXB6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI4NTA3NzQsImV4cCI6MjA3ODQyNjc3NH0.1iC_zrG5FU2jCv_4qzqf8Si8t3cknA705ioPwOz3zSY";
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, { auth:{ persistSession:false }});
 
-// Horario BF extendido: 7am → 23pm y 0–3am
+// Horario extendido: 7:00–23:00 y 00:00–03:00
 const HOURS = [7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,0,1,2,3];
 
 const $ = id => document.getElementById(id);
 
-// set default date = hoy
+// estado en memoria
+let rosterByHour = {};
+let countByHour = {};
+
+// fecha por defecto: hoy
 (function initDate(){
   const d = new Date();
   const iso = new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,10);
   $('date').value = iso;
 })();
 
-$('loadBtn').onclick = loadRoster;
+$('loadBtn').onclick = () => loadAll(true);
+$('reloadBtn').onclick = () => loadAll(false);
 
-async function loadRoster(){
+async function loadAll(showMsgOnEmpty){
   const day = ($('date').value || '').trim();
   const status = $('statusMsg');
-  const box = $('roster');
   if(!day){
     status.className = 'msg err';
     status.textContent = 'Selecciona una fecha.';
@@ -205,8 +269,7 @@ async function loadRoster(){
   }
 
   status.className = 'msg mut';
-  status.textContent = 'Cargando turnos...';
-  box.innerHTML = '';
+  status.textContent = 'Cargando datos...';
 
   try{
     const { data, error } = await sb
@@ -221,94 +284,165 @@ async function loadRoster(){
       return;
     }
 
-    // Agrupar por hora
-    const byHour = {};
-    HOURS.forEach(h => byHour[h] = []);
+    // inicializar estructuras
+    rosterByHour = {};
+    countByHour = {};
+    HOURS.forEach(h => {
+      rosterByHour[h] = [];
+      countByHour[h] = 0;
+    });
+
+    // agrupar por hora y email único
+    const seen = new Set();
     (data || []).forEach(row => {
       const h = Number(row.hour);
-      if(!byHour.hasOwnProperty(h)) return;
-      byHour[h].push(row);
-    });
-
-    // Render
-    HOURS.forEach(h => {
-      const people = byHour[h] || [];
-      const hrDiv = document.createElement('div');
-      hrDiv.className = 'hr';
-
-      const head = document.createElement('div');
-      head.className = 'hr-head';
-      const hLabel = String(h).padStart(2,'0') + ':00';
-
-      const count = people.length;
-      head.innerHTML = `
-        <h3>${hLabel}</h3>
-        <span>${count} asesor(es)</span>
-      `;
-      hrDiv.appendChild(head);
-
-      const pills = document.createElement('div');
-      pills.className = 'pills';
-
-      if(count === 0){
-        const empty = document.createElement('div');
-        empty.className = 'pill';
-        empty.innerHTML = '<span class="meta">Sin turnos en esta hora.</span>';
-        pills.appendChild(empty);
-      }else{
-        people.forEach(p => {
-          const pill = document.createElement('div');
-          pill.className = 'pill';
-          const who = (p.name || '—');
-          const mail = (p.email || '');
-          const chan = (p.channel || '—');
-          const cap  = (p.cap_msg != null ? p.cap_msg : '—');
-
-          pill.innerHTML = `
-            <span class="who">${who}</span>
-            <span class="meta">· ${mail} · ${chan} · cap: ${cap}</span>
-            <button data-del="${h}|${mail.toLowerCase()}">🗑️</button>
-          `;
-          pills.appendChild(pill);
-        });
+      if(!rosterByHour.hasOwnProperty(h)) return;
+      rosterByHour[h].push(row);
+      const key = h + '|' + String(row.email||'').toLowerCase();
+      if(!seen.has(key)){
+        seen.add(key);
+        countByHour[h] += 1;
       }
-
-      hrDiv.appendChild(pills);
-      box.appendChild(hrDiv);
     });
 
-    status.className = 'msg ok';
-    status.textContent = 'Roster cargado para ' + day + '.';
+    drawTable();
+    drawRoster();
 
-    // wire delete buttons
-    box.querySelectorAll('button[data-del]').forEach(btn => {
-      btn.onclick = async () => {
-        const val = btn.getAttribute('data-del');
-        const [hourStr, email] = val.split('|');
-        const hour = Number(hourStr);
-        if(!confirm(`¿Borrar turno de ${email} a las ${String(hour).padStart(2,'0')}:00 para ${day}?`)){
-          return;
-        }
-        const { error: delError } = await sb
-          .from('bookings')
-          .delete()
-          .eq('date', day)
-          .eq('hour', hour)
-          .ilike('email', email);
-
-        if(delError){
-          alert('Error al borrar: ' + delError.message);
-          return;
-        }
-        loadRoster(); // recargar después de borrar
-      };
-    });
-
+    const totalAgents = Object.values(countByHour).reduce((a,b)=>a+b,0);
+    if((data || []).length === 0 && showMsgOnEmpty){
+      status.className = 'msg err';
+      status.textContent = 'No hay turnos registrados para ' + day + '.';
+    }else{
+      status.className = 'msg ok';
+      status.textContent = `Datos cargados para ${day}. Total turnos: ${(data||[]).length}, total asignaciones-hora: ${totalAgents}.`;
+    }
   }catch(e){
     status.className = 'msg err';
     status.textContent = 'Excepción: ' + (e?.message || String(e));
   }
 }
+
+function drawTable(){
+  const tb = $('tbl').querySelector('tbody');
+  tb.innerHTML = '';
+  const capPer = Number($('capPer').value) || 30;
+  const goal = Number($('goal').value) || 0;
+
+  HOURS.forEach(h => {
+    const asesores = countByHour[h] || 0;
+    const capacidad = asesores * capPer;
+
+    let badgeClass = 'low';
+    let badgeText  = 'Bajo';
+    if(goal <= 0){
+      // sin objetivo: verde si hay al menos 1 asesor
+      if(asesores > 0){
+        badgeClass = 'ok';
+        badgeText = 'OK';
+      }
+    }else{
+      if(capacidad >= goal){
+        badgeClass = 'ok';
+        badgeText = 'OK';
+      }else if(capacidad >= goal * 0.7){
+        badgeClass = 'mid';
+        badgeText = 'Medio';
+      }else{
+        badgeClass = 'low';
+        badgeText = 'Bajo';
+      }
+    }
+
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${labelHour(h)}</td>
+      <td>${asesores}</td>
+      <td>${capacidad}</td>
+      <td>${goal > 0 ? goal : '—'}</td>
+      <td><span class="badge ${badgeClass}">${badgeText}</span></td>
+    `;
+    tb.appendChild(tr);
+  });
+}
+
+function drawRoster(){
+  const box = $('roster');
+  box.innerHTML = '';
+
+  const day = ($('date').value || '').trim();
+
+  HOURS.forEach(h => {
+    const people = rosterByHour[h] || [];
+    const hr = document.createElement('div');
+    hr.className = 'hr';
+
+    const head = document.createElement('div');
+    head.className = 'hr-head';
+    head.innerHTML = `
+      <h3>${labelHour(h)}</h3>
+      <span>${people.length} turno(s)</span>
+    `;
+    hr.appendChild(head);
+
+    const pills = document.createElement('div');
+    pills.className = 'pills';
+
+    if(people.length === 0){
+      const empty = document.createElement('div');
+      empty.className = 'pill';
+      empty.innerHTML = '<span class="meta">Sin turnos en esta hora.</span>';
+      pills.appendChild(empty);
+    }else{
+      people.forEach(p => {
+        const mail = String(p.email || '');
+        const chan = p.channel || '—';
+        const cap  = p.cap_msg != null ? p.cap_msg : '—';
+        const pill = document.createElement('div');
+        pill.className = 'pill';
+        pill.innerHTML = `
+          <span class="who">${p.name || '—'}</span>
+          <span class="meta">· ${mail} · ${chan} · cap: ${cap}</span>
+          <button title="Borrar" data-del="${h}|${mail.toLowerCase()}">🗑️</button>
+        `;
+        pills.appendChild(pill);
+      });
+    }
+
+    hr.appendChild(pills);
+    box.appendChild(hr);
+  });
+
+  // wiring de borrado
+  box.querySelectorAll('button[data-del]').forEach(btn => {
+    btn.onclick = async () => {
+      const val = btn.getAttribute('data-del');
+      const [hStr, email] = val.split('|');
+      const hour = Number(hStr);
+      if(!confirm(`¿Borrar turno de ${email} a las ${labelHour(hour)} para ${day}?`)){
+        return;
+      }
+      const { error } = await sb
+        .from('bookings')
+        .delete()
+        .eq('date', day)
+        .eq('hour', hour)
+        .ilike('email', email);
+
+      if(error){
+        alert('Error al borrar: ' + error.message);
+        return;
+      }
+      loadAll(false);
+    };
+  });
+}
+
+function labelHour(h){
+  return String(h).padStart(2,'0') + ':00';
+}
+
+// cargar al abrir
+loadAll(false);
 </script>
 </body>
 </html>
