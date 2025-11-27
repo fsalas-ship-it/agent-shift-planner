@@ -3,16 +3,16 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Sales never sleep — Turnos & Métricas</title>
+<title>Sales never sleep — Turnos & Métricas (MTD)</title>
 <style>
 :root{
-  --bg:#030712;
-  --panel:#020617;
-  --edge:#1f2937;
+  --bg:#05060a;
+  --panel:#0b0f13;
+  --edge:#161b21;
   --text:#e5e7eb;
   --mut:#9ca3af;
-  --acc:#facc15;    /* amarillo promo */
-  --acc2:#22c55e;   /* verde dinero */
+  --acc:#facc15; /* amarillo promo */
+  --acc2:#22c55e;/* verde dinero */
   --bad:#ef4444;
   --ok:#22c55e;
 }
@@ -21,57 +21,46 @@ body{
   margin:0;
   min-height:100vh;
   background:
-    radial-gradient(900px 500px at 0% 0%,rgba(250,204,21,.20),transparent 60%),
-    radial-gradient(900px 600px at 100% 0%,rgba(34,197,94,.16),transparent 60%),
+    radial-gradient(1200px 600px at 10% -10%, rgba(250,204,21,.18),transparent 60%),
+    radial-gradient(1000px 600px at 90% -20%, rgba(34,197,94,.18),transparent 60%),
     var(--bg);
   color:var(--text);
   font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
-  animation:bg-move 18s linear infinite alternate;
 }
-@keyframes bg-move{
-  0%{background-position:0 0,100% 0,0 0;}
-  100%{background-position:-80px -40px,100px -60px,0 0;}
-}
-
 .wrap{
-  width:100%;
-  padding:24px 18px 40px;
+  max-width:1120px;
+  margin:0 auto;
+  padding:28px 18px 40px;
 }
 header{
   display:flex;
   align-items:flex-start;
   justify-content:space-between;
   gap:16px;
-  margin-bottom:14px;
+  margin-bottom:14px
 }
 h1{
   margin:0;
-  font-size:32px;
+  font-size:28px;
   font-weight:900;
   text-transform:uppercase;
   letter-spacing:.16em;
-  animation:hero-pop 1.2s ease-out;
-}
-@keyframes hero-pop{
-  0%{transform:translateY(8px);opacity:0;}
-  100%{transform:translateY(0);opacity:1;}
-}
-.hero-sub{
-  margin-top:6px;
-  font-size:14px;
-  color:#e5e7eb;
 }
 .sub{color:var(--mut);font-size:12px}
+.hero-sub{
+  margin-top:6px;
+  font-size:13px;
+  color:#e5e7eb;
+}
 
-/* Banner Black Friday */
+/* Banner comercial */
 .bf-banner{
-  width:100%;
-  margin:14px 0 18px 0;
-  padding:14px 16px;
+  margin:14px 0 16px;
+  padding:12px 16px;
   border-radius:14px;
   border:1px dashed rgba(250,204,21,.7);
   background:
-    radial-gradient(circle at 0 0,rgba(250,204,21,.24),transparent 55%),
+    radial-gradient(circle at 0 0,rgba(250,204,21,.20),transparent 55%),
     radial-gradient(circle at 100% 0,rgba(34,197,94,.22),transparent 55%),
     #020617;
   display:flex;
@@ -79,11 +68,6 @@ h1{
   gap:10px;
   align-items:center;
   justify-content:space-between;
-  animation:banner-glow 2.4s ease-in-out infinite alternate;
-}
-@keyframes banner-glow{
-  0%{box-shadow:0 0 0 rgba(250,204,21,0.1);}
-  100%{box-shadow:0 0 32px rgba(250,204,21,0.4);}
 }
 .bf-pill{
   font-size:11px;
@@ -102,62 +86,57 @@ h1{
 }
 
 /* Tabs */
-.tabs{display:flex;gap:8px;margin-bottom:12px}
+.tabs{
+  display:flex;
+  gap:8px;
+  margin-bottom:12px;
+}
 .tab{
   border:1px solid var(--edge);
-  background:linear-gradient(180deg,rgba(15,23,42,.9),rgba(15,23,42,.7));
+  background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,0));
   color:#d1d5db;
   padding:10px 14px;
   border-radius:999px;
   cursor:pointer;
-  display:flex;
-  align-items:center;
-  gap:8px;
-  font-size:13px;
-  transition:transform .12s ease-out, box-shadow .12s ease-out, border-color .12s;
-}
-.tab::before{
-  content:'';
-  width:8px;
-  height:8px;
-  border-radius:999px;
-  background:rgba(148,163,184,.5);
 }
 .tab.on{
-  border-color:rgba(250,204,21,.9);
+  border-color:rgba(250,204,21,.75);
   color:#fefce8;
-  box-shadow:0 0 0 1px rgba(250,204,21,.4) inset,0 10px 25px rgba(0,0,0,.8);
-  transform:translateY(-1px);
-}
-.tab.on::before{
-  background:radial-gradient(circle at 30% 30%,#fff,var(--acc2));
+  box-shadow:0 0 0 1px rgba(250,204,21,.4) inset;
 }
 
 /* Cards */
 .card{
-  width:100%;
-  background:
-    radial-gradient(circle at 0 0,rgba(250,204,21,.06),transparent 55%),
-    radial-gradient(circle at 100% 0,rgba(34,197,94,.08),transparent 55%),
-    linear-gradient(180deg,rgba(15,23,42,.96),rgba(15,23,42,.92));
+  background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,0));
   border:1px solid var(--edge);
-  border-radius:18px;
+  border-radius:16px;
   padding:18px;
-  box-shadow:0 20px 40px rgba(0,0,0,.65);
 }
-.grid5{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
-.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
-.lbl{font-size:12px;color:var(--mut);margin-bottom:6px}
+.grid5{
+  display:grid;
+  grid-template-columns:repeat(5,minmax(0,1fr));
+  gap:12px;
+}
+.grid3{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:12px;
+}
+.lbl{
+  font-size:12px;
+  color:var(--mut);
+  margin-bottom:6px;
+}
 .inp,select{
-  background:#020617;
+  background:#0b0f13;
   color:var(--text);
-  border:1px solid #1f2937;
+  border:1px solid #1c232a;
   border-radius:12px;
   padding:12px;
   width:100%;
 }
 
-/* Tag de modo de día */
+/* Tag horario */
 .tag{
   margin-left:6px;
   padding:2px 8px;
@@ -166,11 +145,6 @@ h1{
   border:1px solid #374151;
   background:#020617;
   color:#e5e7eb;
-}
-.tag-bf{
-  background:linear-gradient(90deg,#facc15,#22c55e);
-  color:#111827;
-  border-color:rgba(15,23,42,.8);
 }
 
 /* Horas */
@@ -188,101 +162,61 @@ h1{
   border-radius:12px;
   cursor:pointer;
   user-select:none;
-  background:linear-gradient(180deg,#020617,#020617);
+  background:linear-gradient(180deg,#0f1113,#0b0d0f);
   font-weight:700;
-  font-size:13px;
-  color:#e5e7eb;
-  box-shadow:0 6px 14px rgba(0,0,0,.6);
+  color:#d1d5db;
   position:relative;
-  transition:transform .08s ease-out, box-shadow .08s ease-out, border-color .08s;
-}
-.hbtn:hover{
-  transform:translateY(-1px);
-  box-shadow:0 10px 22px rgba(0,0,0,.75);
-  border-color:#4b5563;
 }
 .hbtn.on{
-  background:linear-gradient(180deg,rgba(250,204,21,.35),rgba(34,197,94,.45));
-  border-color:rgba(250,204,21,.9);
+  background:linear-gradient(180deg,rgba(250,204,21,.35),rgba(34,197,94,.38));
+  border-color:rgba(250,204,21,.8);
   color:#111827;
-  box-shadow:0 0 0 1px rgba(15,23,42,.9) inset,0 10px 24px rgba(250,204,21,.35);
+  box-shadow:0 0 0 1px rgba(0,0,0,.6) inset;
 }
 
-/* Botones */
-.actions{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:16px}
+/* Acciones */
+.actions{
+  display:flex;
+  gap:12px;
+  align-items:center;
+  flex-wrap:wrap;
+  margin-top:16px;
+}
 .btn{
-  background:linear-gradient(135deg,var(--acc),var(--acc2));
-  color:#111827;
+  background:linear-gradient(180deg,var(--acc),var(--acc2));
+  color:#062e15;
   font-weight:900;
   border:none;
   border-radius:12px;
   padding:12px 16px;
   cursor:pointer;
-  font-size:13px;
-  box-shadow:0 12px 30px rgba(250,204,21,.45);
-  transition:transform .12s ease-out, box-shadow .12s ease-out;
-  position:relative;
-  overflow:hidden;
-}
-.btn::after{
-  content:'';
-  position:absolute;
-  inset:0;
-  background:linear-gradient(120deg,transparent 0,rgba(255,255,255,.45) 45%,transparent 90%);
-  transform:translateX(-120%);
-  opacity:.0;
-}
-.btn:hover{
-  transform:translateY(-1px);
-  box-shadow:0 16px 36px rgba(250,204,21,.65);
-}
-.btn:hover::after{
-  opacity:.8;
-  animation:btn-shine .8s ease-out;
-}
-@keyframes btn-shine{
-  0%{transform:translateX(-120%);}
-  100%{transform:translateX(120%);}
 }
 .btn.sec{
-  background:#020617;
+  background:#11151a;
   color:#cbd5e1;
-  border:1px solid #374151;
-  box-shadow:0 8px 18px rgba(15,23,42,.9);
+  border:1px solid #202832;
 }
-.btn.sec::after{display:none;}
-
-/* Mensajes */
 .msg{font-size:12px}
 .ok{color:#22c55e}
 .err{color:#ef4444}
 .mut{color:#9ca3af}
 
-/* Chips de días */
-.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+/* Chips días */
+.chips{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-top:8px;
+}
 .chip{
   display:inline-flex;
   align-items:center;
   gap:6px;
   padding:6px 10px;
   border-radius:999px;
-  border:1px solid #4b5563;
-  background:#020617;
+  border:1px solid #24303a;
+  background:#0c1116;
   font-size:12px;
-}
-.chip.bf{
-  border-color:rgba(250,204,21,.9);
-  background:radial-gradient(circle at 0 0,rgba(250,204,21,.25),transparent 55%);
-}
-.chip span.badge{
-  font-size:10px;
-  text-transform:uppercase;
-  letter-spacing:.08em;
-  padding:2px 6px;
-  border-radius:999px;
-  background:rgba(250,204,21,.15);
-  border:1px solid rgba(250,204,21,.7);
-  color:#facc15;
 }
 .chip button{
   background:transparent;
@@ -292,21 +226,39 @@ h1{
 }
 
 /* Tabla */
-.table{margin-top:12px;border-collapse:collapse;width:100%}
-th,td{border:1px solid #1f2937;padding:8px 10px;font-size:13px}
-th{background:#020617;text-align:left}
+.table{
+  margin-top:12px;
+  border-collapse:collapse;
+  width:100%;
+}
+th,td{
+  border:1px solid #1f2730;
+  padding:8px 10px;
+  font-size:13px;
+}
+th{
+  background:#0e1318;
+  text-align:left;
+}
 
 /* KPI */
 .kpi{
-  border:1px solid #1f2937;
-  background:#020617;
+  border:1px solid #223;
+  background:#0b0f13;
   border-radius:14px;
   padding:18px;
   text-align:center;
-  box-shadow:0 10px 22px rgba(0,0,0,.7);
 }
-.kpi h3{margin:0;font-size:13px;color:#a7f3d0;text-transform:uppercase;letter-spacing:.08em}
-.kpi .v{font-size:28px;font-weight:900;margin-top:8px}
+.kpi h3{
+  margin:0;
+  font-size:13px;
+  color:#a7f3d0;
+}
+.kpi .v{
+  font-size:28px;
+  font-weight:900;
+  margin-top:8px;
+}
 
 /* Modal */
 .modal{
@@ -315,19 +267,30 @@ th{background:#020617;text-align:left}
   display:none;
   align-items:center;
   justify-content:center;
-  background:rgba(0,0,0,.7);
+  background:rgba(0,0,0,.5);
 }
 .modal .box{
   width:min(560px,92%);
-  background:#020617;
-  border:1px solid #1f2937;
+  background:#0b0f13;
+  border:1px solid #223;
   border-radius:16px;
   padding:18px;
-  box-shadow:0 25px 45px rgba(0,0,0,.85);
 }
-.box h3{margin:0 0 8px 0;font-size:16px}
-.list{font-size:14px;line-height:1.7;margin:8px 0 14px 0;color:#d1d5db}
-.row{display:flex;gap:10px;justify-content:flex-end}
+.box h3{
+  margin:0 0 8px 0;
+  font-size:16px;
+}
+.list{
+  font-size:14px;
+  line-height:1.7;
+  margin:8px 0 14px 0;
+  color:#d1d5db;
+}
+.row{
+  display:flex;
+  gap:10px;
+  justify-content:flex-end;
+}
 
 /* Monedas */
 .coin{
@@ -347,10 +310,10 @@ th{background:#020617;text-align:left}
   100%{transform:translate3d(var(--dx,-10px),-90px,0) scale(1.1);opacity:0;}
 }
 
-@media (max-width:960px){
+@media(max-width:960px){
   .grid5{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
-@media (max-width:640px){
+@media(max-width:640px){
   header{flex-direction:column;align-items:flex-start}
   .grid5,.grid3{grid-template-columns:minmax(0,1fr)}
 }
@@ -363,17 +326,19 @@ th{background:#020617;text-align:left}
   <header>
     <div>
       <h1>Sales never sleep</h1>
-      <div class="hero-sub">Del primer ping al último pago: tus turnos son la diferencia entre ver la venta pasar o atraparla.</div>
-      <div class="sub">Agenda (mín 3h/día) en horario extendido <b>7:00 a. m. → 3:00 a. m.</b> y consulta tu acumulado mensual.</div>
+      <div class="hero-sub">Del primer ping al último pago: agenda tus turnos y no dejes ventas dormidas.</div>
+      <div class="sub">
+        En Black Friday (28 nov – 1 dic) horario extendido <b>7:00 a. m. → 3:00 a. m.</b>.
+        Resto de días <b>9:00 a. m. → 9:00 p. m.</b> (mín 3h/día, máx 3 días por registro).
+      </div>
     </div>
     <div class="sub">Capacidad fija: <b>30</b> msgs/h</div>
   </header>
 
-  <!-- Banner Black Friday -->
   <div class="bf-banner">
-    <div class="bf-pill">Black Friday Ops 7am → 3am</div>
+    <div class="bf-pill">Black Friday Ops</div>
     <div class="bf-copy">
-      En <b>28, 29, 30 de noviembre</b> y <b>1 de diciembre</b> la operación corre a tope. Asegura tus slots y no dejes ventas dormidas. 💸⚡
+      28, 29, 30 de noviembre y 1 de diciembre son días clave. Asegura tus slots y atrapa cada oportunidad. 💸⚡
     </div>
   </div>
 
@@ -410,7 +375,7 @@ th{background:#020617;text-align:left}
       </div>
     </div>
 
-    <div class="lbl" style="margin-top:10px">Días seleccionados <span class="mut">(máx 3 por registro)</span></div>
+    <div class="lbl" style="margin-top:10px">Días seleccionados (máximo 3)</div>
     <div class="chips" id="days"></div>
 
     <div style="margin-top:14px">
@@ -427,7 +392,10 @@ th{background:#020617;text-align:left}
       <span id="msg" class="msg"></span>
     </div>
 
-    <div class="sub" style="margin-top:10px">Próximos turnos (tuyos) del mes</div>
+    <div class="sub" style="margin-top:10px">
+      Tus turnos guardados para el email ingresado
+      <span class="mut">(si hay días seleccionados, se filtrará a esos días; si no, verás todo el mes actual).</span>
+    </div>
     <table class="table" id="myTbl">
       <thead>
         <tr><th>Fecha</th><th>Hora</th><th>Canal</th></tr>
@@ -530,18 +498,23 @@ function toast(kind,msg){ const el=$('msg'); el.className='msg '+(kind||'mut'); 
 
 const FIXED_CAP=30;
 
-/* --- Configuración de horarios --- */
-/* Horario extendido: 7:00 → 23:00 y luego 00:00 → 03:00 del siguiente día */
-const HOURS=[
-  ...Array.from({length:17},(_,i)=>i+7),   // 7..23
-  ...Array.from({length:4},(_,i)=>i)       // 0..3
-];
+/* --- HORARIOS --- */
+// Horario normal: 9:00 → 21:00
+const NORMAL_HOURS=[9,10,11,12,13,14,15,16,17,18,19,20,21];
 
-/* Días de Black Friday para resaltar (no afecta horario, solo estilo) */
+// Horario extendido BF: 7:00 → 3:00 del siguiente día
+const EXTENDED_HOURS=[7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,0,1,2,3];
+
+// Días BF con horario extendido (MM-DD)
 const BF_DAYS=['11-28','11-29','11-30','12-01'];
+
 function isBfDay(dateStr){
   if(!dateStr) return false;
   return BF_DAYS.includes(dateStr.slice(5)); // MM-DD
+}
+
+function getHoursForDay(dateStr){
+  return isBfDay(dateStr) ? EXTENDED_HOURS : NORMAL_HOURS;
 }
 
 /* --- Monedas --- */
@@ -578,10 +551,10 @@ function updateDayModeLabel(){
     return;
   }
   if(isBfDay(activeDay)){
-    label.textContent='Black Friday • 7am → 3am';
-    label.className='tag tag-bf';
+    label.textContent='BF 7am → 3am';
+    label.className='tag';
   }else{
-    label.textContent='Horario 7am → 3am';
+    label.textContent='Horario 9am → 9pm';
     label.className='tag';
   }
 }
@@ -624,14 +597,12 @@ function renderDays(){
   const box=$('days');
   box.innerHTML='';
   selectedDays.forEach(d=>{
-    const bf=isBfDay(d);
     const el=document.createElement('span');
-    el.className='chip'+(bf?' bf':'');
-    el.innerHTML=`
-      ${d} ${d===activeDay?'<b>(activo)</b>':''}
-      ${bf?'<span class="badge">BF</span>':''}
-      <button title="Activar" data-sel="${d}">●</button>
-      <button title="Quitar" data-del="${d}">×</button>`;
+    el.className='chip';
+    const badge = isBfDay(d) ? ' <span style="font-size:10px;color:#facc15;">BF</span>' : '';
+    el.innerHTML=`${d} ${d===activeDay?'<b>(activo)</b>':''}${badge}
+      <button data-sel="${d}">●</button>
+      <button data-del="${d}">×</button>`;
     box.appendChild(el);
   });
   box.querySelectorAll('button[data-sel]').forEach(b=> b.onclick=()=> setActiveDay(b.getAttribute('data-sel')) );
@@ -646,7 +617,8 @@ function paintHours(){
     return;
   }
   const sel=hoursByDay[activeDay]||(hoursByDay[activeDay]=new Set());
-  HOURS.forEach(h=>{
+  const list=getHoursForDay(activeDay);
+  list.forEach(h=>{
     const d=document.createElement('div');
     d.className='hbtn'+(sel.has(h)?' on':'');
     const label=String(h).padStart(2,'0')+":00";
@@ -721,36 +693,63 @@ $('save').onclick=async ()=>{
 $('cancelConfirm').onclick=()=>showConfirm(false);
 function showConfirm(f){ $('confirmModal').style.display=f?'flex':'none'; }
 
+/* --- Ver mis turnos (filtrando por días seleccionados si existen) --- */
 async function loadMyShifts(){
   const email=($('email').value||'').trim();
-  if(!email) return;
-  const d=new Date();
-  const ym=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
-  const {data,error}=await sb
-    .from('bookings')
-    .select('date,hour,channel,email')
-    .ilike('email',email)
-    .gte('date',ym+'-01')
-    .lte('date',ym+'-31')
-    .order('date')
-    .order('hour');
-
-  const tb=$('myTbl').querySelector('tbody');
-  tb.innerHTML='';
-  if(error){
-    tb.innerHTML=`<tr><td colspan="3">Error: ${error.message}</td></tr>`;
+  if(!email){
+    toast('err','Escribe tu email para ver tus turnos.');
     return;
   }
-  (data||[]).forEach(r=>{
-    const tr=document.createElement('tr');
-    tr.innerHTML=`<td>${r.date}</td><td>${String(r.hour).padStart(2,'0')}:00</td><td>${r.channel||'—'}</td>`;
-    tb.appendChild(tr);
-  });
+
+  const tb=$('myTbl').querySelector('tbody');
+  tb.innerHTML='<tr><td colspan="3">Cargando…</td></tr>';
+
+  try{
+    let query=sb
+      .from('bookings')
+      .select('date,hour,channel,email')
+      .ilike('email',email);
+
+    if(selectedDays.length>0){
+      // Filtrar solo por los días seleccionados
+      query=query.in('date',selectedDays);
+    }else{
+      // Sin días seleccionados → mes actual completo
+      const d=new Date();
+      const ym=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
+      query=query
+        .gte('date',ym+'-01')
+        .lte('date',ym+'-31');
+    }
+
+    const {data,error}=await query
+      .order('date')
+      .order('hour');
+
+    tb.innerHTML='';
+    if(error){
+      tb.innerHTML=`<tr><td colspan="3">Error: ${error.message}</td></tr>`;
+      return;
+    }
+    if(!data || !data.length){
+      tb.innerHTML='<tr><td colspan="3">No tienes turnos registrados con ese email en el rango seleccionado.</td></tr>';
+      return;
+    }
+    data.forEach(r=>{
+      const tr=document.createElement('tr');
+      tr.innerHTML=`<td>${r.date}</td><td>${String(r.hour).padStart(2,'0')}:00</td><td>${r.channel||'—'}</td>`;
+      tb.appendChild(tr);
+    });
+  }catch(e){
+    const tb=$('myTbl').querySelector('tbody');
+    tb.innerHTML=`<tr><td colspan="3">Excepción: ${(e?.message||String(e))}</td></tr>`;
+  }
 }
+
 $('email').addEventListener('change', loadMyShifts);
 $('viewMyShifts').onclick = loadMyShifts;
 
-// --- Métricas MTD (adaptado a tu CSV real) ---
+// --- Métricas MTD ---
 function toNum(v){
   const n=Number(String(v).replace(/[^0-9.-]/g,''));
   return isFinite(n)?n:0;
