@@ -5,45 +5,262 @@
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>Agente — Turnos & Métricas (MTD)</title>
 <style>
-:root{--bg:#05060a;--panel:#0b0f13;--edge:#161b21;--text:#e5e7eb;--mut:#9ca3af;--acc:#00e676;--acc2:#00c853;--bad:#ef4444;--ok:#22c55e}
+:root{
+  --bg:#030712;
+  --panel:#020617;
+  --edge:#1f2937;
+  --text:#e5e7eb;
+  --mut:#9ca3af;
+  --acc:#facc15;    /* amarillo promo */
+  --acc2:#22c55e;   /* verde dinero */
+  --bad:#ef4444;
+  --ok:#22c55e;
+}
 *{box-sizing:border-box}
-body{margin:0;background:radial-gradient(1200px 600px at 10% -10%, rgba(0,230,118,.08),transparent 60%),var(--bg);color:var(--text);font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial}
+body{
+  margin:0;
+  background:
+    radial-gradient(900px 500px at 0% 0%,rgba(250,204,21,.20),transparent 60%),
+    radial-gradient(900px 600px at 100% 0%,rgba(34,197,94,.16),transparent 60%),
+    var(--bg);
+  color:var(--text);
+  font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
+}
 .wrap{max-width:1120px;margin:0 auto;padding:28px}
 header{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:14px}
 h1{margin:0;font-size:22px;font-weight:900}
 .sub{color:var(--mut);font-size:12px}
+
+/* Banner Black Friday */
+.bf-banner{
+  margin-bottom:16px;
+  padding:12px 16px;
+  border-radius:14px;
+  border:1px dashed rgba(250,204,21,.7);
+  background:
+    radial-gradient(circle at 0 0,rgba(250,204,21,.20),transparent 55%),
+    radial-gradient(circle at 100% 0,rgba(34,197,94,.22),transparent 55%),
+    #020617;
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  align-items:center;
+  justify-content:space-between;
+}
+.bf-pill{
+  font-size:11px;
+  font-weight:800;
+  text-transform:uppercase;
+  letter-spacing:.12em;
+  padding:6px 12px;
+  border-radius:999px;
+  background:linear-gradient(90deg,var(--acc),var(--acc2));
+  color:#111827;
+  box-shadow:0 8px 20px rgba(0,0,0,.6);
+}
+.bf-copy{
+  font-size:13px;
+  color:#f9fafb;
+}
+
+/* Tabs */
 .tabs{display:flex;gap:8px;margin-bottom:12px}
-.tab{border:1px solid var(--edge);background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,0));color:#d1d5db;padding:10px 14px;border-radius:999px;cursor:pointer}
-.tab.on{border-color:rgba(0,230,118,.55);color:#eafff1;box-shadow:0 0 0 1px rgba(0,230,118,.25) inset}
-.card{background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,0));border:1px solid var(--edge);border-radius:16px;padding:18px}
+.tab{
+  border:1px solid var(--edge);
+  background:linear-gradient(180deg,rgba(15,23,42,.9),rgba(15,23,42,.7));
+  color:#d1d5db;
+  padding:10px 14px;
+  border-radius:999px;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-size:13px;
+}
+.tab::before{
+  content:'';
+  width:8px;
+  height:8px;
+  border-radius:999px;
+  background:rgba(148,163,184,.5);
+}
+.tab.on{
+  border-color:rgba(250,204,21,.9);
+  color:#fefce8;
+  box-shadow:0 0 0 1px rgba(250,204,21,.4) inset,0 10px 25px rgba(0,0,0,.8);
+}
+.tab.on::before{
+  background:radial-gradient(circle at 30% 30%,#fff,var(--acc2));
+}
+
+/* Cards */
+.card{
+  background:
+    radial-gradient(circle at 0 0,rgba(250,204,21,.06),transparent 55%),
+    radial-gradient(circle at 100% 0,rgba(34,197,94,.08),transparent 55%),
+    linear-gradient(180deg,rgba(15,23,42,.95),rgba(15,23,42,.90));
+  border:1px solid var(--edge);
+  border-radius:18px;
+  padding:18px;
+  box-shadow:0 20px 40px rgba(0,0,0,.65);
+}
 .grid5{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
 .grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
 .lbl{font-size:12px;color:var(--mut);margin-bottom:6px}
-.inp,select{background:#0b0f13;color:var(--text);border:1px solid #1c232a;border-radius:12px;padding:12px;width:100%}
-.hours{display:grid;grid-template-columns:repeat(13,minmax(0,1fr));gap:10px}
-.hbtn{height:44px;display:flex;align-items:center;justify-content:center;border:1px solid #22272c;border-radius:12px;cursor:pointer;user-select:none;background:linear-gradient(180deg,#0f1113,#0b0d0f);font-weight:700;color:#d1d5db}
-.hbtn.on{background:linear-gradient(180deg,rgba(0,230,118,.18),rgba(0,200,83,.16));border-color:rgba(0,230,118,.55);color:#eafff1;box-shadow:0 0 0 1px rgba(0,230,118,.25) inset}
+.inp,select{
+  background:#020617;
+  color:var(--text);
+  border:1px solid #1f2937;
+  border-radius:12px;
+  padding:12px;
+  width:100%;
+}
+
+/* Tag de modo de día */
+.tag{
+  margin-left:6px;
+  padding:2px 8px;
+  border-radius:999px;
+  font-size:11px;
+  border:1px solid #374151;
+  background:#020617;
+  color:#e5e7eb;
+}
+.tag-bf{
+  background:linear-gradient(90deg,#facc15,#22c55e);
+  color:#111827;
+  border-color:rgba(15,23,42,.8);
+}
+
+/* Horas */
+.hours{display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:10px}
+.hbtn{
+  height:44px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border:1px solid #22272c;
+  border-radius:12px;
+  cursor:pointer;
+  user-select:none;
+  background:linear-gradient(180deg,#020617,#020617);
+  font-weight:700;
+  font-size:13px;
+  color:#e5e7eb;
+  box-shadow:0 6px 14px rgba(0,0,0,.6);
+}
+.hbtn.on{
+  background:linear-gradient(180deg,rgba(250,204,21,.35),rgba(34,197,94,.45));
+  border-color:rgba(250,204,21,.9);
+  color:#111827;
+  box-shadow:0 0 0 1px rgba(15,23,42,.9) inset,0 10px 24px rgba(250,204,21,.35);
+}
+
+/* Botones */
 .actions{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:16px}
-.btn{background:linear-gradient(180deg,var(--acc),var(--acc2));color:#062e15;font-weight:900;border:none;border-radius:12px;padding:12px 16px;cursor:pointer}
-.btn.sec{background:#11151a;color:#cbd5e1;border:1px solid #202832}
+.btn{
+  background:linear-gradient(135deg,var(--acc),var(--acc2));
+  color:#111827;
+  font-weight:900;
+  border:none;
+  border-radius:12px;
+  padding:12px 16px;
+  cursor:pointer;
+  font-size:13px;
+  box-shadow:0 12px 30px rgba(250,204,21,.45);
+}
+.btn.sec{
+  background:#020617;
+  color:#cbd5e1;
+  border:1px solid #374151;
+  box-shadow:0 8px 18px rgba(15,23,42,.9);
+}
+.btn:hover{transform:translateY(-1px);}
+
+/* Mensajes */
 .msg{font-size:12px}
 .ok{color:#22c55e}
 .err{color:#ef4444}
 .mut{color:#9ca3af}
-.kpi{border:1px solid #223;background:#0b0f13;border-radius:14px;padding:18px;text-align:center}
-.kpi h3{margin:0;font-size:13px;color:#a7f3d0}
-.kpi .v{font-size:28px;font-weight:900;margin-top:8px}
-.table{margin-top:12px;border-collapse:collapse;width:100%}
-th,td{border:1px solid #1f2730;padding:8px 10px;font-size:13px}
-th{background:#0e1318;text-align:left}
+
+/* Chips de días */
 .chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
-.chip{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;border:1px solid #24303a;background:#0c1116;font-size:12px}
-.chip button{background:transparent;border:none;color:#93a3b3;cursor:pointer}
-.modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.5);}
-.modal .box{width:min(560px,92%);background:#0b0f13;border:1px solid #223;border-radius:16px;padding:18px}
+.chip{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  padding:6px 10px;
+  border-radius:999px;
+  border:1px solid #4b5563;
+  background:#020617;
+  font-size:12px;
+}
+.chip.bf{
+  border-color:rgba(250,204,21,.9);
+  background:radial-gradient(circle at 0 0,rgba(250,204,21,.25),transparent 55%);
+}
+.chip span.badge{
+  font-size:10px;
+  text-transform:uppercase;
+  letter-spacing:.08em;
+  padding:2px 6px;
+  border-radius:999px;
+  background:rgba(250,204,21,.15);
+  border:1px solid rgba(250,204,21,.7);
+  color:#facc15;
+}
+.chip button{
+  background:transparent;
+  border:none;
+  color:#93a3b3;
+  cursor:pointer;
+}
+
+/* Tabla */
+.table{margin-top:12px;border-collapse:collapse;width:100%}
+th,td{border:1px solid #1f2937;padding:8px 10px;font-size:13px}
+th{background:#020617;text-align:left}
+
+/* KPI */
+.kpi{
+  border:1px solid #1f2937;
+  background:#020617;
+  border-radius:14px;
+  padding:18px;
+  text-align:center;
+  box-shadow:0 10px 22px rgba(0,0,0,.7);
+}
+.kpi h3{margin:0;font-size:13px;color:#a7f3d0;text-transform:uppercase;letter-spacing:.08em}
+.kpi .v{font-size:28px;font-weight:900;margin-top:8px}
+
+/* Modal */
+.modal{
+  position:fixed;
+  inset:0;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  background:rgba(0,0,0,.7);
+}
+.modal .box{
+  width:min(560px,92%);
+  background:#020617;
+  border:1px solid #1f2937;
+  border-radius:16px;
+  padding:18px;
+  box-shadow:0 25px 45px rgba(0,0,0,.85);
+}
 .box h3{margin:0 0 8px 0;font-size:16px}
 .list{font-size:14px;line-height:1.7;margin:8px 0 14px 0;color:#d1d5db}
 .row{display:flex;gap:10px;justify-content:flex-end}
+
+@media (max-width:960px){
+  .grid5{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:640px){
+  header{flex-direction:column;align-items:flex-start}
+  .grid5,.grid3{grid-template-columns:minmax(0,1fr)}
+}
 </style>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.43.1/dist/umd/supabase.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
@@ -53,10 +270,18 @@ th{background:#0e1318;text-align:left}
   <header>
     <div>
       <h1>Agente — Turnos & Métricas (MTD)</h1>
-      <div class="sub">Agenda (mín 3h/día, máx 3 días por registro) y consulta tu acumulado mensual.</div>
+      <div class="sub">Agenda (mín 3h/día, Black Friday 24/7 en días especiales) y consulta tu acumulado mensual.</div>
     </div>
     <div class="sub">Capacidad fija: <b>30</b> msgs/h</div>
   </header>
+
+  <!-- Banner Black Friday -->
+  <div class="bf-banner">
+    <div class="bf-pill">Black Friday Ops 24/7</div>
+    <div class="bf-copy">
+      Del <b>28, 29, 30 de noviembre</b> y <b>1 de diciembre</b> puedes agendar turnos en <u>cualquier hora</u> del día. 💸⚡
+    </div>
+  </div>
 
   <div class="tabs">
     <button class="tab on" id="tShift">Programar turno</button>
@@ -91,12 +316,13 @@ th{background:#0e1318;text-align:left}
       </div>
     </div>
 
-    <div class="lbl" style="margin-top:10px">Días seleccionados (máximo 3)</div>
+    <div class="lbl" style="margin-top:10px">Días seleccionados <span class="mut">(máx 3 por registro)</span></div>
     <div class="chips" id="days"></div>
 
     <div style="margin-top:14px">
       <div class="lbl">
-        Horas para el día activo <span id="activeDayLabel" class="mut"></span> (mínimo 3)
+        Horas para el día activo <span id="activeDayLabel" class="mut"></span>
+        <span id="dayModeLabel" class="tag"></span> (mínimo 3)
       </div>
       <div class="hours" id="hours"></div>
     </div>
@@ -209,7 +435,26 @@ tMetrics.onclick=()=>{tMetrics.classList.add('on');tShift.classList.remove('on')
 function toast(kind,msg){ const el=$('msg'); el.className='msg '+(kind||'mut'); el.textContent=msg; }
 
 const FIXED_CAP=30;
-const HOURS=[9,10,11,12,13,14,15,16,17,18,19,20,21];
+
+/* --- Configuración de horarios --- */
+// Horario normal: 9:00 a 21:00
+const NORMAL_HOURS=[9,10,11,12,13,14,15,16,17,18,19,20,21];
+// Black Friday 24/7: todas las horas
+const FULLDAY_HOURS=Array.from({length:24},(_,i)=>i);
+
+// Días especiales 24/7: 28,29,30 nov y 01 dic (cualquier año)
+const SPECIAL_24H_DAYS=['11-28','11-29','11-30','12-01'];
+
+function is24hDay(dateStr){
+  if(!dateStr) return false;
+  const md=dateStr.slice(5); // MM-DD
+  return SPECIAL_24H_DAYS.includes(md);
+}
+
+function getHoursForDay(dateStr){
+  return is24hDay(dateStr)?FULLDAY_HOURS:NORMAL_HOURS;
+}
+/* --- fin configuración horarios --- */
 
 let activeDay=null;
 const selectedDays=[];
@@ -222,11 +467,28 @@ const hoursByDay={};
   setActiveDay(iso,true);
 })();
 
+function updateDayModeLabel(){
+  const label=$('dayModeLabel');
+  if(!activeDay){
+    label.textContent='';
+    label.className='tag';
+    return;
+  }
+  if(is24hDay(activeDay)){
+    label.textContent='Black Friday 24/7';
+    label.className='tag tag-bf';
+  }else{
+    label.textContent='Horario estándar';
+    label.className='tag';
+  }
+}
+
 function setActiveDay(date,ensureAdded=false){
   activeDay=date;
   $('activeDayLabel').textContent=activeDay?('('+activeDay+')'):'';
   if(ensureAdded && !selectedDays.includes(date)) addDay(date);
   renderDays();
+  updateDayModeLabel();
   paintHours();
 }
 
@@ -246,7 +508,7 @@ function removeDay(date){
     delete hoursByDay[date];
   }
   if(selectedDays.length){ setActiveDay(selectedDays[0]); }
-  else { activeDay=null; paintHours(); renderDays(); }
+  else { activeDay=null; paintHours(); renderDays(); updateDayModeLabel(); }
 }
 
 $('addDay').onclick=()=>{
@@ -259,11 +521,14 @@ function renderDays(){
   const box=$('days');
   box.innerHTML='';
   selectedDays.forEach(d=>{
+    const isBF=is24hDay(d);
     const el=document.createElement('span');
-    el.className='chip';
-    el.innerHTML=`${d} ${d===activeDay?'<b>(activo)</b>':''}
-      <button data-sel="${d}">●</button>
-      <button data-del="${d}">×</button>`;
+    el.className='chip'+(isBF?' bf':'');
+    el.innerHTML=`
+      ${d} ${d===activeDay?'<b>(activo)</b>':''}
+      ${isBF?'<span class="badge">BF 24/7</span>':''}
+      <button title="Activar" data-sel="${d}">●</button>
+      <button title="Quitar" data-del="${d}">×</button>`;
     box.appendChild(el);
   });
   box.querySelectorAll('button[data-sel]').forEach(b=> b.onclick=()=> setActiveDay(b.getAttribute('data-sel')) );
@@ -278,10 +543,12 @@ function paintHours(){
     return;
   }
   const sel=hoursByDay[activeDay]||(hoursByDay[activeDay]=new Set());
-  HOURS.forEach(h=>{
+  const list=getHoursForDay(activeDay);
+  list.forEach(h=>{
     const d=document.createElement('div');
     d.className='hbtn'+(sel.has(h)?' on':'');
-    d.textContent=h+":00";
+    const label=String(h).padStart(2,'0')+":00";
+    d.textContent=label;
     d.onclick=()=>{
       sel.has(h)?sel.delete(h):sel.add(h);
       paintHours();
@@ -305,7 +572,7 @@ $('save').onclick=async ()=>{
   const lines=selectedDays.map(d=>{
     const arr=Array.from(hoursByDay[d]||[])
       .sort((a,b)=>a-b)
-      .map(h=>`${h}:00`)
+      .map(h=>`${String(h).padStart(2,'0')}:00`)
       .join(', ');
     return `<li><b>${d}</b> — ${arr}</li>`;
   }).join('');
@@ -340,6 +607,7 @@ $('save').onclick=async ()=>{
       for(const k in hoursByDay) delete hoursByDay[k];
       renderDays();
       paintHours();
+      updateDayModeLabel();
       loadMyShifts();
     }catch(e){
       toast('err','Excepción: '+(e?.message||String(e)));
@@ -348,111 +616,4 @@ $('save').onclick=async ()=>{
 };
 
 $('cancelConfirm').onclick=()=>showConfirm(false);
-function showConfirm(f){ $('confirmModal').style.display=f?'flex':'none'; }
-
-async function loadMyShifts(){
-  const email=($('email').value||'').trim();
-  if(!email) return;
-  const d=new Date();
-  const ym=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
-  const {data,error}=await sb
-    .from('bookings')
-    .select('date,hour,channel,email')
-    .ilike('email',email)
-    .gte('date',ym+'-01')
-    .lte('date',ym+'-31')
-    .order('date')
-    .order('hour');
-
-  const tb=$('myTbl').querySelector('tbody');
-  tb.innerHTML='';
-  if(error){
-    tb.innerHTML=`<tr><td colspan="3">Error: ${error.message}</td></tr>`;
-    return;
-  }
-  (data||[]).forEach(r=>{
-    const tr=document.createElement('tr');
-    tr.innerHTML=`<td>${r.date}</td><td>${r.hour}:00</td><td>${r.channel||'—'}</td>`;
-    tb.appendChild(tr);
-  });
-}
-$('email').addEventListener('change', loadMyShifts);
-$('viewMyShifts').onclick = loadMyShifts;
-
-// --- Métricas MTD (adaptado a tu CSV real) ---
-function toNum(v){
-  const n=Number(String(v).replace(/[^0-9.-]/g,''));
-  return isFinite(n)?n:0;
-}
-async function fetchCSV(url){
-  const r=await fetch(url,{cache:"no-store"});
-  if(!r.ok) throw new Error("HTTP "+r.status);
-  const t=await r.text();
-  return new Promise((res,rej)=>Papa.parse(t,{header:true,skipEmptyLines:true,complete:x=>res(x.data),error:rej}));
-}
-function pct(x){return (x*100).toFixed(1)+'%';}
-function safeDiv(a,b){return b>0?a/b:0;}
-function findHeader(headers,needle){
-  const n=needle.toLowerCase();
-  return headers.find(h=>h.toLowerCase().includes(n)) || null;
-}
-
-$('mload').onclick=async ()=>{
-  const month=($('month').value||'').trim();
-  const email=($('memail').value||'').trim().toLowerCase();
-  if(!month||!email){
-    $('mmsg').className='msg err';
-    $('mmsg').textContent='Escribe mes y email.';
-    return;
-  }
-  $('mmsg').className='msg mut';
-  $('mmsg').textContent='Cargando…';
-  try{
-    const url=`${CSV_BASE_URL}/${month}.csv`;
-    const rows=await fetchCSV(url);
-    if(!rows.length) throw new Error('CSV sin filas');
-    const headers=Object.keys(rows[0]||{});
-
-    const emailCol=headers.find(h=>/email/i.test(h)) || headers[0];
-    const mine=rows.filter(r=>String(r[emailCol]||'').toLowerCase()===email);
-    if(!mine.length){
-      $('mmsg').className='msg err';
-      $('mmsg').textContent='No hay registros para ese email.';
-      return;
-    }
-
-    const colAssigned  = findHeader(headers,'conv. gestionadas');
-    const colClosed    = findHeader(headers,'conv. cerrad');
-    const colSent      = findHeader(headers,'usuarios a quien se envio link de pago');
-    const colTxn       = findHeader(headers,'txn atribuida');
-
-    const sum = (col)=> mine.reduce((a,r)=>a+toNum(r[col]??0),0);
-
-    const assigned = colAssigned ? sum(colAssigned) : 0;
-    const attended = assigned;
-    const closed   = colClosed ? sum(colClosed) : 0;
-    const sent     = colSent ? sum(colSent) : 0;
-    const paid     = colTxn ? sum(colTxn) : 0;
-    const sales    = paid;
-
-    $('k_assigned').textContent=assigned;
-    $('k_attended').textContent=attended;
-    $('k_closed').textContent=closed;
-    $('k_sent').textContent=sent;
-    $('k_paid').textContent=paid;
-    $('k_sales').textContent=sales;
-
-    $('k_cvr1').textContent=pct(safeDiv(sales,attended));
-    $('k_cvr2').textContent=pct(safeDiv(sales,sent));
-    $('k_cvr3').textContent=pct(safeDiv(sales,paid));
-
-    $('mmsg').className='msg ok';
-    $('mmsg').textContent='Listo ✔️';
-  }catch(e){
-    $('mmsg').className='msg err';
-    $('mmsg').textContent='Error: '+(e?.message||String(e));
-  }
-};
-</script>
-</body>
-</html>
+function showConfirm(f){ $('confirmModal').style.display
