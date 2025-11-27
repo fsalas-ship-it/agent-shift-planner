@@ -3,16 +3,16 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Sales never sleep — Turnos & Métricas (MTD)</title>
+<title>Sales never sleep — Turnos & Métricas</title>
 <style>
 :root{
-  --bg:#05060a;
-  --panel:#0b0f13;
-  --edge:#161b21;
+  --bg:#020617;
+  --panel:#0b1120;
+  --edge:#1f2933;
   --text:#e5e7eb;
   --mut:#9ca3af;
-  --acc:#facc15; /* amarillo promo */
-  --acc2:#22c55e;/* verde dinero */
+  --acc:#facc15;
+  --acc2:#22c55e;
   --bad:#ef4444;
   --ok:#22c55e;
 }
@@ -20,49 +20,41 @@
 body{
   margin:0;
   min-height:100vh;
-  background:
-    radial-gradient(1200px 600px at 10% -10%, rgba(250,204,21,.18),transparent 60%),
-    radial-gradient(1000px 600px at 90% -20%, rgba(34,197,94,.18),transparent 60%),
-    var(--bg);
+  background:radial-gradient(circle at 0 0,rgba(250,204,21,.1),transparent 55%),
+             radial-gradient(circle at 100% 0,rgba(34,197,94,.1),transparent 55%),
+             var(--bg);
   color:var(--text);
-  font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
 }
 .wrap{
   max-width:1120px;
   margin:0 auto;
-  padding:28px 18px 40px;
+  padding:24px 16px 40px;
 }
 header{
   display:flex;
   align-items:flex-start;
   justify-content:space-between;
   gap:16px;
-  margin-bottom:14px
+  margin-bottom:16px;
 }
 h1{
   margin:0;
-  font-size:28px;
+  font-size:26px;
   font-weight:900;
-  text-transform:uppercase;
   letter-spacing:.16em;
+  text-transform:uppercase;
 }
 .sub{color:var(--mut);font-size:12px}
-.hero-sub{
-  margin-top:6px;
-  font-size:13px;
-  color:#e5e7eb;
-}
+.hero-sub{margin-top:6px;font-size:13px;color:#e5e7eb}
 
-/* Banner comercial */
+/* Banner */
 .bf-banner{
-  margin:14px 0 16px;
-  padding:12px 16px;
-  border-radius:14px;
+  margin:12px 0 16px;
+  padding:10px 14px;
+  border-radius:12px;
   border:1px dashed rgba(250,204,21,.7);
-  background:
-    radial-gradient(circle at 0 0,rgba(250,204,21,.20),transparent 55%),
-    radial-gradient(circle at 100% 0,rgba(34,197,94,.22),transparent 55%),
-    #020617;
+  background:#020617;
   display:flex;
   flex-wrap:wrap;
   gap:10px;
@@ -74,69 +66,62 @@ h1{
   font-weight:800;
   text-transform:uppercase;
   letter-spacing:.12em;
-  padding:6px 12px;
+  padding:6px 10px;
   border-radius:999px;
   background:linear-gradient(90deg,var(--acc),var(--acc2));
   color:#111827;
-  box-shadow:0 8px 20px rgba(0,0,0,.6);
 }
-.bf-copy{
-  font-size:13px;
-  color:#f9fafb;
-}
+.bf-copy{font-size:13px;color:#f9fafb}
 
 /* Tabs */
-.tabs{
-  display:flex;
-  gap:8px;
-  margin-bottom:12px;
-}
+.tabs{display:flex;gap:8px;margin-bottom:12px}
 .tab{
   border:1px solid var(--edge);
-  background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,0));
+  background:#020617;
   color:#d1d5db;
-  padding:10px 14px;
+  padding:8px 12px;
   border-radius:999px;
   cursor:pointer;
+  font-size:13px;
 }
 .tab.on{
-  border-color:rgba(250,204,21,.75);
+  border-color:rgba(250,204,21,.7);
   color:#fefce8;
-  box-shadow:0 0 0 1px rgba(250,204,21,.4) inset;
 }
 
 /* Cards */
 .card{
-  background:linear-gradient(180deg,rgba(255,255,255,.03),rgba(255,255,255,0));
+  background:#020617;
   border:1px solid var(--edge);
-  border-radius:16px;
-  padding:18px;
+  border-radius:14px;
+  padding:16px;
 }
 .grid5{
   display:grid;
   grid-template-columns:repeat(5,minmax(0,1fr));
-  gap:12px;
+  gap:10px;
 }
 .grid3{
   display:grid;
   grid-template-columns:repeat(3,minmax(0,1fr));
-  gap:12px;
+  gap:10px;
 }
 .lbl{
   font-size:12px;
   color:var(--mut);
-  margin-bottom:6px;
+  margin-bottom:4px;
 }
 .inp,select{
-  background:#0b0f13;
+  background:#020617;
   color:var(--text);
-  border:1px solid #1c232a;
-  border-radius:12px;
-  padding:12px;
+  border:1px solid #1f2933;
+  border-radius:10px;
+  padding:10px;
   width:100%;
+  font-size:13px;
 }
 
-/* Tag horario */
+/* Tag */
 .tag{
   margin-left:6px;
   padding:2px 8px;
@@ -151,50 +136,49 @@ h1{
 .hours{
   display:grid;
   grid-template-columns:repeat(7,minmax(0,1fr));
-  gap:10px;
+  gap:8px;
+  margin-top:6px;
 }
 .hbtn{
-  height:44px;
+  height:40px;
   display:flex;
   align-items:center;
   justify-content:center;
-  border:1px solid #22272c;
-  border-radius:12px;
+  border:1px solid #1f2933;
+  border-radius:10px;
   cursor:pointer;
   user-select:none;
-  background:linear-gradient(180deg,#0f1113,#0b0d0f);
-  font-weight:700;
-  color:#d1d5db;
-  position:relative;
+  background:#020617;
+  font-size:13px;
 }
 .hbtn.on{
-  background:linear-gradient(180deg,rgba(250,204,21,.35),rgba(34,197,94,.38));
-  border-color:rgba(250,204,21,.8);
+  background:linear-gradient(180deg,var(--acc),var(--acc2));
   color:#111827;
-  box-shadow:0 0 0 1px rgba(0,0,0,.6) inset;
+  border-color:rgba(250,204,21,.8);
 }
 
 /* Acciones */
 .actions{
   display:flex;
-  gap:12px;
+  gap:10px;
   align-items:center;
   flex-wrap:wrap;
-  margin-top:16px;
+  margin-top:14px;
 }
 .btn{
   background:linear-gradient(180deg,var(--acc),var(--acc2));
   color:#062e15;
-  font-weight:900;
+  font-weight:700;
   border:none;
-  border-radius:12px;
-  padding:12px 16px;
+  border-radius:10px;
+  padding:10px 14px;
   cursor:pointer;
+  font-size:13px;
 }
 .btn.sec{
-  background:#11151a;
+  background:#020617;
   color:#cbd5e1;
-  border:1px solid #202832;
+  border:1px solid #1f2933;
 }
 .msg{font-size:12px}
 .ok{color:#22c55e}
@@ -204,18 +188,18 @@ h1{
 /* Chips días */
 .chips{
   display:flex;
-  gap:8px;
+  gap:6px;
   flex-wrap:wrap;
-  margin-top:8px;
+  margin-top:6px;
 }
 .chip{
   display:inline-flex;
   align-items:center;
-  gap:6px;
-  padding:6px 10px;
+  gap:4px;
+  padding:4px 8px;
   border-radius:999px;
   border:1px solid #24303a;
-  background:#0c1116;
+  background:#020617;
   font-size:12px;
 }
 .chip button{
@@ -227,38 +211,27 @@ h1{
 
 /* Tabla */
 .table{
-  margin-top:12px;
+  margin-top:10px;
   border-collapse:collapse;
   width:100%;
+  font-size:13px;
 }
 th,td{
   border:1px solid #1f2730;
-  padding:8px 10px;
-  font-size:13px;
+  padding:6px 8px;
 }
-th{
-  background:#0e1318;
-  text-align:left;
-}
+th{background:#020617;text-align:left}
 
 /* KPI */
 .kpi{
   border:1px solid #223;
-  background:#0b0f13;
-  border-radius:14px;
-  padding:18px;
+  background:#020617;
+  border-radius:12px;
+  padding:14px;
   text-align:center;
 }
-.kpi h3{
-  margin:0;
-  font-size:13px;
-  color:#a7f3d0;
-}
-.kpi .v{
-  font-size:28px;
-  font-weight:900;
-  margin-top:8px;
-}
+.kpi h3{margin:0;font-size:13px;color:#a7f3d0}
+.kpi .v{font-size:24px;font-weight:900;margin-top:6px}
 
 /* Modal */
 .modal{
@@ -267,48 +240,18 @@ th{
   display:none;
   align-items:center;
   justify-content:center;
-  background:rgba(0,0,0,.5);
+  background:rgba(0,0,0,.6);
 }
 .modal .box{
-  width:min(560px,92%);
-  background:#0b0f13;
+  width:min(480px,92%);
+  background:#020617;
   border:1px solid #223;
-  border-radius:16px;
-  padding:18px;
+  border-radius:14px;
+  padding:16px;
 }
-.box h3{
-  margin:0 0 8px 0;
-  font-size:16px;
-}
-.list{
-  font-size:14px;
-  line-height:1.7;
-  margin:8px 0 14px 0;
-  color:#d1d5db;
-}
-.row{
-  display:flex;
-  gap:10px;
-  justify-content:flex-end;
-}
-
-/* Monedas */
-.coin{
-  position:fixed;
-  width:18px;
-  height:18px;
-  border-radius:50%;
-  background:
-    radial-gradient(circle at 30% 30%,#fff7c2,#facc15 50%,#eab308 75%,#92400e);
-  box-shadow:0 6px 14px rgba(0,0,0,.8);
-  pointer-events:none;
-  animation:coin-pop 800ms ease-out forwards;
-}
-@keyframes coin-pop{
-  0%{transform:translate3d(0,0,0) scale(.5);opacity:0;}
-  25%{opacity:1;}
-  100%{transform:translate3d(var(--dx,-10px),-90px,0) scale(1.1);opacity:0;}
-}
+.box h3{margin:0 0 8px;font-size:16px}
+.list{font-size:14px;line-height:1.6;margin:6px 0 12px;color:#e5e7eb}
+.row{display:flex;gap:8px;justify-content:flex-end}
 
 @media(max-width:960px){
   .grid5{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -375,10 +318,10 @@ th{
       </div>
     </div>
 
-    <div class="lbl" style="margin-top:10px">Días seleccionados (máximo 3)</div>
+    <div class="lbl" style="margin-top:8px">Días seleccionados (máximo 3)</div>
     <div class="chips" id="days"></div>
 
-    <div style="margin-top:14px">
+    <div style="margin-top:12px">
       <div class="lbl">
         Horas para el día activo <span id="activeDayLabel" class="mut"></span>
         <span id="dayModeLabel" class="tag"></span> (mínimo 3)
@@ -392,7 +335,7 @@ th{
       <span id="msg" class="msg"></span>
     </div>
 
-    <div class="sub" style="margin-top:10px">
+    <div class="sub" style="margin-top:8px">
       Tus turnos guardados para el email ingresado
       <span class="mut">(si hay días seleccionados, se filtrará a esos días; si no, verás todo el mes actual).</span>
     </div>
@@ -423,53 +366,26 @@ th{
     <div class="msg" id="mmsg" style="margin-top:8px"></div>
 
     <div class="grid3" style="margin-top:12px">
-      <div class="kpi">
-        <h3>Asignadas</h3>
-        <div class="v" id="k_assigned">0</div>
-      </div>
-      <div class="kpi">
-        <h3>Atendidas</h3>
-        <div class="v" id="k_attended">0</div>
-      </div>
-      <div class="kpi">
-        <h3>Cerradas</h3>
-        <div class="v" id="k_closed">0</div>
-      </div>
+      <div class="kpi"><h3>Asignadas</h3><div class="v" id="k_assigned">0</div></div>
+      <div class="kpi"><h3>Atendidas</h3><div class="v" id="k_attended">0</div></div>
+      <div class="kpi"><h3>Cerradas</h3><div class="v" id="k_closed">0</div></div>
     </div>
 
     <div class="grid3" style="margin-top:12px">
-      <div class="kpi">
-        <h3>Links enviados</h3>
-        <div class="v" id="k_sent">0</div>
-      </div>
-      <div class="kpi">
-        <h3>Links pagados</h3>
-        <div class="v" id="k_paid">0</div>
-      </div>
-      <div class="kpi">
-        <h3>Ventas</h3>
-        <div class="v" id="k_sales">0</div>
-      </div>
+      <div class="kpi"><h3>Links enviados</h3><div class="v" id="k_sent">0</div></div>
+      <div class="kpi"><h3>Links pagados</h3><div class="v" id="k_paid">0</div></div>
+      <div class="kpi"><h3>Ventas</h3><div class="v" id="k_sales">0</div></div>
     </div>
 
     <div class="grid3" style="margin-top:12px">
-      <div class="kpi">
-        <h3>Conv. / Atendidas</h3>
-        <div class="v" id="k_cvr1">0%</div>
-      </div>
-      <div class="kpi">
-        <h3>Conv. / Links enviados</h3>
-        <div class="v" id="k_cvr2">0%</div>
-      </div>
-      <div class="kpi">
-        <h3>Conv. / Links pagados</h3>
-        <div class="v" id="k_cvr3">0%</div>
-      </div>
+      <div class="kpi"><h3>Conv. / Atendidas</h3><div class="v" id="k_cvr1">0%</div></div>
+      <div class="kpi"><h3>Conv. / Links enviados</h3><div class="v" id="k_cvr2">0%</div></div>
+      <div class="kpi"><h3>Conv. / Links pagados</h3><div class="v" id="k_cvr3">0%</div></div>
     </div>
   </section>
 </div>
 
-<!-- Modal de confirmación de turnos -->
+<!-- Modal -->
 <div class="modal" id="confirmModal" role="dialog" aria-modal="true">
   <div class="box">
     <h3>Confirma tus turnos</h3>
@@ -498,38 +414,17 @@ function toast(kind,msg){ const el=$('msg'); el.className='msg '+(kind||'mut'); 
 
 const FIXED_CAP=30;
 
-/* --- HORARIOS --- */
-// Horario normal: 9:00 → 21:00
+/* Horarios */
 const NORMAL_HOURS=[9,10,11,12,13,14,15,16,17,18,19,20,21];
-
-// Horario extendido BF: 7:00 → 3:00 del siguiente día
 const EXTENDED_HOURS=[7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,0,1,2,3];
-
-// Días BF con horario extendido (MM-DD)
 const BF_DAYS=['11-28','11-29','11-30','12-01'];
 
 function isBfDay(dateStr){
-  if(!dateStr) return false;
-  return BF_DAYS.includes(dateStr.slice(5)); // MM-DD
+  if(!dateStr)return false;
+  return BF_DAYS.includes(dateStr.slice(5));
 }
-
 function getHoursForDay(dateStr){
-  return isBfDay(dateStr) ? EXTENDED_HOURS : NORMAL_HOURS;
-}
-
-/* --- Monedas --- */
-function spawnCoins(x,y){
-  const howMany=4+Math.floor(Math.random()*3);
-  for(let i=0;i<howMany;i++){
-    const coin=document.createElement('div');
-    coin.className='coin';
-    const dx=(Math.random()*60-30).toFixed(0)+'px';
-    coin.style.setProperty('--dx',dx);
-    coin.style.left=(x+Math.random()*10-5)+'px';
-    coin.style.top=(y+Math.random()*10-5)+'px';
-    document.body.appendChild(coin);
-    setTimeout(()=>coin.remove(),800);
-  }
+  return isBfDay(dateStr)?EXTENDED_HOURS:NORMAL_HOURS;
 }
 
 let activeDay=null;
@@ -545,23 +440,13 @@ const hoursByDay={};
 
 function updateDayModeLabel(){
   const label=$('dayModeLabel');
-  if(!activeDay){
-    label.textContent='';
-    label.className='tag';
-    return;
-  }
-  if(isBfDay(activeDay)){
-    label.textContent='BF 7am → 3am';
-    label.className='tag';
-  }else{
-    label.textContent='Horario 9am → 9pm';
-    label.className='tag';
-  }
+  if(!activeDay){label.textContent='';return;}
+  label.textContent=isBfDay(activeDay)?'BF 7am → 3am':'Horario 9am → 9pm';
 }
 
 function setActiveDay(date,ensureAdded=false){
   activeDay=date;
-  $('activeDayLabel').textContent=activeDay?('('+activeDay+')'):'';
+  $('activeDayLabel').textContent=activeDay?`(${activeDay})`:'';
   if(ensureAdded && !selectedDays.includes(date)) addDay(date);
   renderDays();
   updateDayModeLabel();
@@ -583,8 +468,8 @@ function removeDay(date){
     selectedDays.splice(i,1);
     delete hoursByDay[date];
   }
-  if(selectedDays.length){ setActiveDay(selectedDays[0]); }
-  else { activeDay=null; paintHours(); renderDays(); updateDayModeLabel(); }
+  if(selectedDays.length){setActiveDay(selectedDays[0]);}
+  else{activeDay=null;paintHours();renderDays();updateDayModeLabel();}
 }
 
 $('addDay').onclick=()=>{
@@ -599,14 +484,14 @@ function renderDays(){
   selectedDays.forEach(d=>{
     const el=document.createElement('span');
     el.className='chip';
-    const badge = isBfDay(d) ? ' <span style="font-size:10px;color:#facc15;">BF</span>' : '';
+    const badge=isBfDay(d)?' <span style="font-size:10px;color:#facc15;">BF</span>':'';
     el.innerHTML=`${d} ${d===activeDay?'<b>(activo)</b>':''}${badge}
       <button data-sel="${d}">●</button>
       <button data-del="${d}">×</button>`;
     box.appendChild(el);
   });
-  box.querySelectorAll('button[data-sel]').forEach(b=> b.onclick=()=> setActiveDay(b.getAttribute('data-sel')) );
-  box.querySelectorAll('button[data-del]').forEach(b=> b.onclick=()=> removeDay(b.getAttribute('data-del')) );
+  box.querySelectorAll('button[data-sel]').forEach(b=>b.onclick=()=>setActiveDay(b.getAttribute('data-sel')));
+  box.querySelectorAll('button[data-del]').forEach(b=>b.onclick=()=>removeDay(b.getAttribute('data-del')));
 }
 
 function paintHours(){
@@ -621,12 +506,10 @@ function paintHours(){
   list.forEach(h=>{
     const d=document.createElement('div');
     d.className='hbtn'+(sel.has(h)?' on':'');
-    const label=String(h).padStart(2,'0')+":00";
-    d.textContent=label;
-    d.onclick=(ev)=>{
+    d.textContent=`${String(h).padStart(2,'0')}:00`;
+    d.onclick=()=>{
       sel.has(h)?sel.delete(h):sel.add(h);
       paintHours();
-      spawnCoins(ev.clientX,ev.clientY);
     };
     box.appendChild(d);
   });
@@ -636,8 +519,8 @@ $('save').onclick=async ()=>{
   const name=$('name').value.trim();
   const email=$('email').value.trim();
   const channel=$('channel').value;
-  if(!name||!email){ return toast('err','Escribe tu nombre y email.'); }
-  if(selectedDays.length===0){ return toast('err','Agrega al menos 1 día.'); }
+  if(!name||!email){return toast('err','Escribe tu nombre y email.');}
+  if(selectedDays.length===0){return toast('err','Agrega al menos 1 día.');}
   for(const d of selectedDays){
     if((hoursByDay[d]||new Set()).size<3){
       return toast('err',`El día ${d} tiene menos de 3 horas.`);
@@ -647,8 +530,7 @@ $('save').onclick=async ()=>{
   const lines=selectedDays.map(d=>{
     const arr=Array.from(hoursByDay[d]||[])
       .sort((a,b)=>a-b)
-      .map(h=>`${String(h).padStart(2,'0')}:00`)
-      .join(', ');
+      .map(h=>`${String(h).padStart(2,'0')}:00`).join(', ');
     return `<li><b>${d}</b> — ${arr}</li>`;
   }).join('');
 
@@ -676,10 +558,10 @@ $('save').onclick=async ()=>{
       const {error,status}=await sb
         .from('bookings')
         .upsert(rows,{onConflict:'date,hour,email',ignoreDuplicates:false,defaultToNull:true});
-      if(error){ return toast('err',`Error (${status||'—'}): ${error.message}`); }
+      if(error){return toast('err',`Error (${status||'—'}): ${error.message}`);}
       toast('ok','Turnos guardados ✔️');
       selectedDays.splice(0,selectedDays.length);
-      for(const k in hoursByDay) delete hoursByDay[k];
+      for(const k in hoursByDay)delete hoursByDay[k];
       renderDays();
       paintHours();
       updateDayModeLabel();
@@ -691,47 +573,35 @@ $('save').onclick=async ()=>{
 };
 
 $('cancelConfirm').onclick=()=>showConfirm(false);
-function showConfirm(f){ $('confirmModal').style.display=f?'flex':'none'; }
+function showConfirm(f){$('confirmModal').style.display=f?'flex':'none';}
 
-/* --- Ver mis turnos (filtrando por días seleccionados si existen) --- */
+/* Ver mis turnos */
 async function loadMyShifts(){
   const email=($('email').value||'').trim();
-  if(!email){
-    toast('err','Escribe tu email para ver tus turnos.');
-    return;
-  }
-
+  if(!email){toast('err','Escribe tu email para ver tus turnos.');return;}
   const tb=$('myTbl').querySelector('tbody');
   tb.innerHTML='<tr><td colspan="3">Cargando…</td></tr>';
 
   try{
-    let query=sb
-      .from('bookings')
+    let query=sb.from('bookings')
       .select('date,hour,channel,email')
       .ilike('email',email);
 
     if(selectedDays.length>0){
-      // Filtrar solo por los días seleccionados
       query=query.in('date',selectedDays);
     }else{
-      // Sin días seleccionados → mes actual completo
       const d=new Date();
       const ym=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
-      query=query
-        .gte('date',ym+'-01')
-        .lte('date',ym+'-31');
+      query=query.gte('date',ym+'-01').lte('date',ym+'-31');
     }
 
-    const {data,error}=await query
-      .order('date')
-      .order('hour');
-
+    const {data,error}=await query.order('date').order('hour');
     tb.innerHTML='';
     if(error){
       tb.innerHTML=`<tr><td colspan="3">Error: ${error.message}</td></tr>`;
       return;
     }
-    if(!data || !data.length){
+    if(!data||!data.length){
       tb.innerHTML='<tr><td colspan="3">No tienes turnos registrados con ese email en el rango seleccionado.</td></tr>';
       return;
     }
@@ -741,22 +611,21 @@ async function loadMyShifts(){
       tb.appendChild(tr);
     });
   }catch(e){
-    const tb=$('myTbl').querySelector('tbody');
     tb.innerHTML=`<tr><td colspan="3">Excepción: ${(e?.message||String(e))}</td></tr>`;
   }
 }
 
 $('email').addEventListener('change', loadMyShifts);
-$('viewMyShifts').onclick = loadMyShifts;
+$('viewMyShifts').onclick=loadMyShifts;
 
-// --- Métricas MTD ---
+/* Métricas MTD */
 function toNum(v){
   const n=Number(String(v).replace(/[^0-9.-]/g,''));
   return isFinite(n)?n:0;
 }
 async function fetchCSV(url){
   const r=await fetch(url,{cache:"no-store"});
-  if(!r.ok) throw new Error("HTTP "+r.status);
+  if(!r.ok)throw new Error("HTTP "+r.status);
   const t=await r.text();
   return new Promise((res,rej)=>Papa.parse(t,{header:true,skipEmptyLines:true,complete:x=>res(x.data),error:rej}));
 }
@@ -764,7 +633,7 @@ function pct(x){return (x*100).toFixed(1)+'%';}
 function safeDiv(a,b){return b>0?a/b:0;}
 function findHeader(headers,needle){
   const n=needle.toLowerCase();
-  return headers.find(h=>h.toLowerCase().includes(n)) || null;
+  return headers.find(h=>h.toLowerCase().includes(n))||null;
 }
 
 $('mload').onclick=async ()=>{
@@ -780,30 +649,26 @@ $('mload').onclick=async ()=>{
   try{
     const url=`${CSV_BASE_URL}/${month}.csv`;
     const rows=await fetchCSV(url);
-    if(!rows.length) throw new Error('CSV sin filas');
+    if(!rows.length)throw new Error('CSV sin filas');
     const headers=Object.keys(rows[0]||{});
-
-    const emailCol=headers.find(h=>/email/i.test(h)) || headers[0];
+    const emailCol=headers.find(h=>/email/i.test(h))||headers[0];
     const mine=rows.filter(r=>String(r[emailCol]||'').toLowerCase()===email);
     if(!mine.length){
       $('mmsg').className='msg err';
       $('mmsg').textContent='No hay registros para ese email.';
       return;
     }
-
-    const colAssigned  = findHeader(headers,'conv. gestionadas');
-    const colClosed    = findHeader(headers,'conv. cerrad');
-    const colSent      = findHeader(headers,'usuarios a quien se envio link de pago');
-    const colTxn       = findHeader(headers,'txn atribuida');
-
-    const sum = (col)=> mine.reduce((a,r)=>a+toNum(r[col]??0),0);
-
-    const assigned = colAssigned ? sum(colAssigned) : 0;
-    const attended = assigned;
-    const closed   = colClosed ? sum(colClosed) : 0;
-    const sent     = colSent ? sum(colSent) : 0;
-    const paid     = colTxn ? sum(colTxn) : 0;
-    const sales    = paid;
+    const colAssigned=findHeader(headers,'conv. gestionadas');
+    const colClosed=findHeader(headers,'conv. cerrad');
+    const colSent=findHeader(headers,'usuarios a quien se envio link de pago');
+    const colTxn=findHeader(headers,'txn atribuida');
+    const sum=col=>mine.reduce((a,r)=>a+toNum(r[col]??0),0);
+    const assigned=colAssigned?sum(colAssigned):0;
+    const attended=assigned;
+    const closed=colClosed?sum(colClosed):0;
+    const sent=colSent?sum(colSent):0;
+    const paid=colTxn?sum(colTxn):0;
+    const sales=paid;
 
     $('k_assigned').textContent=assigned;
     $('k_attended').textContent=attended;
@@ -811,11 +676,9 @@ $('mload').onclick=async ()=>{
     $('k_sent').textContent=sent;
     $('k_paid').textContent=paid;
     $('k_sales').textContent=sales;
-
     $('k_cvr1').textContent=pct(safeDiv(sales,attended));
     $('k_cvr2').textContent=pct(safeDiv(sales,sent));
     $('k_cvr3').textContent=pct(safeDiv(sales,paid));
-
     $('mmsg').className='msg ok';
     $('mmsg').textContent='Listo ✔️';
   }catch(e){
