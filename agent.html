@@ -26,7 +26,13 @@ body{
     var(--bg);
   color:var(--text);
   font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
+  animation:bg-move 18s linear infinite alternate;
 }
+@keyframes bg-move{
+  0%{background-position:0 0,100% 0,0 0;}
+  100%{background-position:-80px -40px,100px -60px,0 0;}
+}
+
 .wrap{
   width:100%;
   padding:24px 18px 40px;
@@ -40,14 +46,19 @@ header{
 }
 h1{
   margin:0;
-  font-size:30px;
+  font-size:32px;
   font-weight:900;
   text-transform:uppercase;
   letter-spacing:.16em;
+  animation:hero-pop 1.2s ease-out;
+}
+@keyframes hero-pop{
+  0%{transform:translateY(8px);opacity:0;}
+  100%{transform:translateY(0);opacity:1;}
 }
 .hero-sub{
   margin-top:6px;
-  font-size:13px;
+  font-size:14px;
   color:#e5e7eb;
 }
 .sub{color:var(--mut);font-size:12px}
@@ -56,11 +67,11 @@ h1{
 .bf-banner{
   width:100%;
   margin:14px 0 18px 0;
-  padding:12px 16px;
+  padding:14px 16px;
   border-radius:14px;
   border:1px dashed rgba(250,204,21,.7);
   background:
-    radial-gradient(circle at 0 0,rgba(250,204,21,.20),transparent 55%),
+    radial-gradient(circle at 0 0,rgba(250,204,21,.24),transparent 55%),
     radial-gradient(circle at 100% 0,rgba(34,197,94,.22),transparent 55%),
     #020617;
   display:flex;
@@ -68,6 +79,11 @@ h1{
   gap:10px;
   align-items:center;
   justify-content:space-between;
+  animation:banner-glow 2.4s ease-in-out infinite alternate;
+}
+@keyframes banner-glow{
+  0%{box-shadow:0 0 0 rgba(250,204,21,0.1);}
+  100%{box-shadow:0 0 32px rgba(250,204,21,0.4);}
 }
 .bf-pill{
   font-size:11px;
@@ -98,6 +114,7 @@ h1{
   align-items:center;
   gap:8px;
   font-size:13px;
+  transition:transform .12s ease-out, box-shadow .12s ease-out, border-color .12s;
 }
 .tab::before{
   content:'';
@@ -110,6 +127,7 @@ h1{
   border-color:rgba(250,204,21,.9);
   color:#fefce8;
   box-shadow:0 0 0 1px rgba(250,204,21,.4) inset,0 10px 25px rgba(0,0,0,.8);
+  transform:translateY(-1px);
 }
 .tab.on::before{
   background:radial-gradient(circle at 30% 30%,#fff,var(--acc2));
@@ -121,7 +139,7 @@ h1{
   background:
     radial-gradient(circle at 0 0,rgba(250,204,21,.06),transparent 55%),
     radial-gradient(circle at 100% 0,rgba(34,197,94,.08),transparent 55%),
-    linear-gradient(180deg,rgba(15,23,42,.95),rgba(15,23,42,.90));
+    linear-gradient(180deg,rgba(15,23,42,.96),rgba(15,23,42,.92));
   border:1px solid var(--edge);
   border-radius:18px;
   padding:18px;
@@ -158,7 +176,7 @@ h1{
 /* Horas */
 .hours{
   display:grid;
-  grid-template-columns:repeat(8,minmax(0,1fr));
+  grid-template-columns:repeat(7,minmax(0,1fr));
   gap:10px;
 }
 .hbtn{
@@ -176,614 +194,14 @@ h1{
   color:#e5e7eb;
   box-shadow:0 6px 14px rgba(0,0,0,.6);
   position:relative;
+  transition:transform .08s ease-out, box-shadow .08s ease-out, border-color .08s;
+}
+.hbtn:hover{
+  transform:translateY(-1px);
+  box-shadow:0 10px 22px rgba(0,0,0,.75);
+  border-color:#4b5563;
 }
 .hbtn.on{
-  background:linear-gradient(180deg,rgba(250,204,21,.35),rgba(34,197,94,.45));
-  border-color:rgba(250,204,21,.9);
-  color:#111827;
-  box-shadow:0 0 0 1px rgba(15,23,42,.9) inset,0 10px 24px rgba(250,204,21,.35);
-}
+  background:linear-gradient(180deg,rgba(250,204,21,.35),rgba(34,197,
 
-/* Botones */
-.actions{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-top:16px}
-.btn{
-  background:linear-gradient(135deg,var(--acc),var(--acc2));
-  color:#111827;
-  font-weight:900;
-  border:none;
-  border-radius:12px;
-  padding:12px 16px;
-  cursor:pointer;
-  font-size:13px;
-  box-shadow:0 12px 30px rgba(250,204,21,.45);
-}
-.btn.sec{
-  background:#020617;
-  color:#cbd5e1;
-  border:1px solid #374151;
-  box-shadow:0 8px 18px rgba(15,23,42,.9);
-}
-.btn:hover{transform:translateY(-1px);}
-
-/* Mensajes */
-.msg{font-size:12px}
-.ok{color:#22c55e}
-.err{color:#ef4444}
-.mut{color:#9ca3af}
-
-/* Chips de días */
-.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
-.chip{
-  display:inline-flex;
-  align-items:center;
-  gap:6px;
-  padding:6px 10px;
-  border-radius:999px;
-  border:1px solid #4b5563;
-  background:#020617;
-  font-size:12px;
-}
-.chip.bf{
-  border-color:rgba(250,204,21,.9);
-  background:radial-gradient(circle at 0 0,rgba(250,204,21,.25),transparent 55%);
-}
-.chip span.badge{
-  font-size:10px;
-  text-transform:uppercase;
-  letter-spacing:.08em;
-  padding:2px 6px;
-  border-radius:999px;
-  background:rgba(250,204,21,.15);
-  border:1px solid rgba(250,204,21,.7);
-  color:#facc15;
-}
-.chip button{
-  background:transparent;
-  border:none;
-  color:#93a3b3;
-  cursor:pointer;
-}
-
-/* Tabla */
-.table{margin-top:12px;border-collapse:collapse;width:100%}
-th,td{border:1px solid #1f2937;padding:8px 10px;font-size:13px}
-th{background:#020617;text-align:left}
-
-/* KPI */
-.kpi{
-  border:1px solid #1f2937;
-  background:#020617;
-  border-radius:14px;
-  padding:18px;
-  text-align:center;
-  box-shadow:0 10px 22px rgba(0,0,0,.7);
-}
-.kpi h3{margin:0;font-size:13px;color:#a7f3d0;text-transform:uppercase;letter-spacing:.08em}
-.kpi .v{font-size:28px;font-weight:900;margin-top:8px}
-
-/* Modal */
-.modal{
-  position:fixed;
-  inset:0;
-  display:none;
-  align-items:center;
-  justify-content:center;
-  background:rgba(0,0,0,.7);
-}
-.modal .box{
-  width:min(560px,92%);
-  background:#020617;
-  border:1px solid #1f2937;
-  border-radius:16px;
-  padding:18px;
-  box-shadow:0 25px 45px rgba(0,0,0,.85);
-}
-.box h3{margin:0 0 8px 0;font-size:16px}
-.list{font-size:14px;line-height:1.7;margin:8px 0 14px 0;color:#d1d5db}
-.row{display:flex;gap:10px;justify-content:flex-end}
-
-/* Monedas */
-.coin{
-  position:fixed;
-  width:18px;
-  height:18px;
-  border-radius:50%;
-  background:
-    radial-gradient(circle at 30% 30%,#fff7c2,#facc15 50%,#eab308 75%,#92400e);
-  box-shadow:0 6px 14px rgba(0,0,0,.8);
-  pointer-events:none;
-  animation:coin-pop 800ms ease-out forwards;
-}
-@keyframes coin-pop{
-  0%{transform:translate3d(0,0,0) scale(.5);opacity:0;}
-  25%{opacity:1;}
-  100%{transform:translate3d(var(--dx,-10px),-80px,0) scale(1.1);opacity:0;}
-}
-
-@media (max-width:960px){
-  .grid5{grid-template-columns:repeat(2,minmax(0,1fr))}
-}
-@media (max-width:640px){
-  header{flex-direction:column;align-items:flex-start}
-  .grid5,.grid3{grid-template-columns:minmax(0,1fr)}
-}
-</style>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.43.1/dist/umd/supabase.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
-</head>
-<body>
-<div class="wrap">
-  <header>
-    <div>
-      <h1>Sales never sleep</h1>
-      <div class="hero-sub">Turnos & métricas para la operación más despierta del año.</div>
-      <div class="sub">Agenda (mín 3h/día, Black Friday 24/7 en días especiales) y consulta tu acumulado mensual.</div>
-    </div>
-    <div class="sub">Capacidad fija: <b>30</b> msgs/h</div>
-  </header>
-
-  <!-- Banner Black Friday -->
-  <div class="bf-banner">
-    <div class="bf-pill">Black Friday Ops 24/7</div>
-    <div class="bf-copy">
-      Del <b>28, 29, 30 de noviembre</b> y <b>1 de diciembre</b> puedes agendar turnos en <u>cualquier hora</u> del día. 💸⚡
-    </div>
-  </div>
-
-  <div class="tabs">
-    <button class="tab on" id="tShift">Programar turno</button>
-    <button class="tab" id="tMetrics">Mis métricas</button>
-  </div>
-
-  <!-- Sección turnos -->
-  <section class="card" id="shiftSec">
-    <div class="grid5">
-      <div>
-        <div class="lbl">Selecciona un día</div>
-        <input class="inp" type="date" id="datePick">
-      </div>
-      <div style="align-self:end">
-        <button class="btn sec" id="addDay">Agregar día</button>
-      </div>
-      <div>
-        <div class="lbl">Nombre</div>
-        <input class="inp" id="name" placeholder="Tu nombre">
-      </div>
-      <div>
-        <div class="lbl">Email</div>
-        <input class="inp" id="email" placeholder="tu@correo.com">
-      </div>
-      <div>
-        <div class="lbl">Canal</div>
-        <select id="channel" class="inp">
-          <option value="mensajes">mensajes</option>
-          <option value="llamadas">llamadas</option>
-          <option value="ambos">ambos</option>
-        </select>
-      </div>
-    </div>
-
-    <div class="lbl" style="margin-top:10px">Días seleccionados <span class="mut">(máx 3 por registro)</span></div>
-    <div class="chips" id="days"></div>
-
-    <div style="margin-top:14px">
-      <div class="lbl">
-        Horas para el día activo <span id="activeDayLabel" class="mut"></span>
-        <span id="dayModeLabel" class="tag"></span> (mínimo 3)
-      </div>
-      <div class="hours" id="hours"></div>
-    </div>
-
-    <div class="actions">
-      <button class="btn" id="save">Validar y guardar</button>
-      <button class="btn sec" id="viewMyShifts">Ver mis turnos</button>
-      <span id="msg" class="msg"></span>
-    </div>
-
-    <div class="sub" style="margin-top:10px">Próximos turnos (tuyos) del mes</div>
-    <table class="table" id="myTbl">
-      <thead>
-        <tr><th>Fecha</th><th>Hora</th><th>Canal</th></tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-  </section>
-
-  <!-- Sección métricas -->
-  <section class="card" id="metricsSec" style="display:none">
-    <div class="grid5">
-      <div>
-        <div class="lbl">Mes (AAAA-MM)</div>
-        <input class="inp" id="month" placeholder="2025-11">
-      </div>
-      <div>
-        <div class="lbl">Tu email</div>
-        <input class="inp" id="memail" placeholder="tu@correo.com">
-      </div>
-      <div style="align-self:end">
-        <button class="btn" id="mload">Ver acumulado</button>
-      </div>
-    </div>
-
-    <div class="msg" id="mmsg" style="margin-top:8px"></div>
-
-    <div class="grid3" style="margin-top:12px">
-      <div class="kpi">
-        <h3>Asignadas</h3>
-        <div class="v" id="k_assigned">0</div>
-      </div>
-      <div class="kpi">
-        <h3>Atendidas</h3>
-        <div class="v" id="k_attended">0</div>
-      </div>
-      <div class="kpi">
-        <h3>Cerradas</h3>
-        <div class="v" id="k_closed">0</div>
-      </div>
-    </div>
-
-    <div class="grid3" style="margin-top:12px">
-      <div class="kpi">
-        <h3>Links enviados</h3>
-        <div class="v" id="k_sent">0</div>
-      </div>
-      <div class="kpi">
-        <h3>Links pagados</h3>
-        <div class="v" id="k_paid">0</div>
-      </div>
-      <div class="kpi">
-        <h3>Ventas</h3>
-        <div class="v" id="k_sales">0</div>
-      </div>
-    </div>
-
-    <div class="grid3" style="margin-top:12px">
-      <div class="kpi">
-        <h3>Conv. / Atendidas</h3>
-        <div class="v" id="k_cvr1">0%</div>
-      </div>
-      <div class="kpi">
-        <h3>Conv. / Links enviados</h3>
-        <div class="v" id="k_cvr2">0%</div>
-      </div>
-      <div class="kpi">
-        <h3>Conv. / Links pagados</h3>
-        <div class="v" id="k_cvr3">0%</div>
-      </div>
-    </div>
-  </section>
-</div>
-
-<!-- Modal de confirmación de turnos -->
-<div class="modal" id="confirmModal" role="dialog" aria-modal="true">
-  <div class="box">
-    <h3>Confirma tus turnos</h3>
-    <div class="list" id="confirmList"></div>
-    <div class="row">
-      <button class="btn sec" id="cancelConfirm">Cancelar</button>
-      <button class="btn" id="acceptConfirm">Aceptar y guardar</button>
-    </div>
-  </div>
-</div>
-
-<script>
-const SUPABASE_URL="https://wbplsmimcuphytdfjapz.supabase.co";
-const SUPABASE_ANON_KEY="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndicGxzbWltY3VwaHl0ZGZqYXB6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI4NTA3NzQsImV4cCI6MjA3ODQyNjc3NH0.1iC_zrG5FU2jCv_4qzqf8Si8t3cknA705ioPwOz3zSY";
-const sb=supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY,{auth:{persistSession:false}});
-const CSV_BASE_URL="https://fsalas-ship-it.github.io/agent-shift-planner/monthly";
-
-const $=id=>document.getElementById(id);
-const tShift=$('tShift'),tMetrics=$('tMetrics');
-const shiftSec=$('shiftSec'),metricsSec=$('metricsSec');
-
-tShift.onclick=()=>{tShift.classList.add('on');tMetrics.classList.remove('on');shiftSec.style.display='block';metricsSec.style.display='none';};
-tMetrics.onclick=()=>{tMetrics.classList.add('on');tShift.classList.remove('on');shiftSec.style.display='none';metricsSec.style.display='block';};
-
-function toast(kind,msg){ const el=$('msg'); el.className='msg '+(kind||'mut'); el.textContent=msg; }
-
-const FIXED_CAP=30;
-
-/* --- Configuración de horarios --- */
-// Horario normal: 9:00 a 21:00
-const NORMAL_HOURS=[9,10,11,12,13,14,15,16,17,18,19,20,21];
-// Black Friday 24/7: todas las horas
-const FULLDAY_HOURS=Array.from({length:24},(_,i)=>i);
-
-// Días especiales 24/7: 28,29,30 nov y 01 dic (cualquier año)
-const SPECIAL_24H_DAYS=['11-28','11-29','11-30','12-01'];
-
-function is24hDay(dateStr){
-  if(!dateStr) return false;
-  const md=dateStr.slice(5); // MM-DD
-  return SPECIAL_24H_DAYS.includes(md);
-}
-
-function getHoursForDay(dateStr){
-  return is24hDay(dateStr)?FULLDAY_HOURS:NORMAL_HOURS;
-}
-
-/* --- Monedas --- */
-function spawnCoins(x,y){
-  const howMany=4+Math.floor(Math.random()*3);
-  for(let i=0;i<howMany;i++){
-    const coin=document.createElement('div');
-    coin.className='coin';
-    const dx=(Math.random()*60-30).toFixed(0)+'px';
-    coin.style.setProperty('--dx',dx);
-    coin.style.left=(x+Math.random()*10-5)+'px';
-    coin.style.top=(y+Math.random()*10-5)+'px';
-    document.body.appendChild(coin);
-    setTimeout(()=>coin.remove(),800);
-  }
-}
-
-let activeDay=null;
-const selectedDays=[];
-const hoursByDay={};
-
-(function initDates(){
-  const d=new Date();
-  const iso=new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,10);
-  $('datePick').value=iso;
-  setActiveDay(iso,true);
-})();
-
-function updateDayModeLabel(){
-  const label=$('dayModeLabel');
-  if(!activeDay){
-    label.textContent='';
-    label.className='tag';
-    return;
-  }
-  if(is24hDay(activeDay)){
-    label.textContent='Black Friday 24/7';
-    label.className='tag tag-bf';
-  }else{
-    label.textContent='Horario estándar';
-    label.className='tag';
-  }
-}
-
-function setActiveDay(date,ensureAdded=false){
-  activeDay=date;
-  $('activeDayLabel').textContent=activeDay?('('+activeDay+')'):'';
-  if(ensureAdded && !selectedDays.includes(date)) addDay(date);
-  renderDays();
-  updateDayModeLabel();
-  paintHours();
-}
-
-function addDay(date){
-  if(!date)return;
-  if(selectedDays.includes(date))return setActiveDay(date);
-  if(selectedDays.length>=3){return toast('err','Máximo 3 días por registro.');}
-  selectedDays.push(date);
-  hoursByDay[date]=hoursByDay[date]||new Set();
-  setActiveDay(date);
-}
-
-function removeDay(date){
-  const i=selectedDays.indexOf(date);
-  if(i>=0){
-    selectedDays.splice(i,1);
-    delete hoursByDay[date];
-  }
-  if(selectedDays.length){ setActiveDay(selectedDays[0]); }
-  else { activeDay=null; paintHours(); renderDays(); updateDayModeLabel(); }
-}
-
-$('addDay').onclick=()=>{
-  const d=$('datePick').value;
-  if(!d){toast('err','Selecciona un día.');return;}
-  addDay(d);
-};
-
-function renderDays(){
-  const box=$('days');
-  box.innerHTML='';
-  selectedDays.forEach(d=>{
-    const isBF=is24hDay(d);
-    const el=document.createElement('span');
-    el.className='chip'+(isBF?' bf':'');
-    el.innerHTML=`
-      ${d} ${d===activeDay?'<b>(activo)</b>':''}
-      ${isBF?'<span class="badge">BF 24/7</span>':''}
-      <button title="Activar" data-sel="${d}">●</button>
-      <button title="Quitar" data-del="${d}">×</button>`;
-    box.appendChild(el);
-  });
-  box.querySelectorAll('button[data-sel]').forEach(b=> b.onclick=()=> setActiveDay(b.getAttribute('data-sel')) );
-  box.querySelectorAll('button[data-del]').forEach(b=> b.onclick=()=> removeDay(b.getAttribute('data-del')) );
-}
-
-function paintHours(){
-  const box=$('hours');
-  box.innerHTML='';
-  if(!activeDay){
-    box.innerHTML='<div class="mut">Primero agrega un día.</div>';
-    return;
-  }
-  const sel=hoursByDay[activeDay]||(hoursByDay[activeDay]=new Set());
-  const list=getHoursForDay(activeDay);
-  list.forEach(h=>{
-    const d=document.createElement('div');
-    d.className='hbtn'+(sel.has(h)?' on':'');
-    const label=String(h).padStart(2,'0')+":00";
-    d.textContent=label;
-    d.onclick=(ev)=>{
-      sel.has(h)?sel.delete(h):sel.add(h);
-      paintHours();
-      spawnCoins(ev.clientX,ev.clientY);
-    };
-    box.appendChild(d);
-  });
-}
-
-$('save').onclick=async ()=>{
-  const name=$('name').value.trim();
-  const email=$('email').value.trim();
-  const channel=$('channel').value;
-  if(!name||!email){ return toast('err','Escribe tu nombre y email.'); }
-  if(selectedDays.length===0){ return toast('err','Agrega al menos 1 día.'); }
-  for(const d of selectedDays){
-    if((hoursByDay[d]||new Set()).size<3){
-      return toast('err',`El día ${d} tiene menos de 3 horas.`);
-    }
-  }
-
-  const lines=selectedDays.map(d=>{
-    const arr=Array.from(hoursByDay[d]||[])
-      .sort((a,b)=>a-b)
-      .map(h=>`${String(h).padStart(2,'0')}:00`)
-      .join(', ');
-    return `<li><b>${d}</b> — ${arr}</li>`;
-  }).join('');
-
-  $('confirmList').innerHTML=`
-    <p>
-      <b>Nombre:</b> ${name}<br>
-      <b>Email:</b> ${email}<br>
-      <b>Canal:</b> ${channel}<br>
-      <b>Capacidad:</b> ${FIXED_CAP} msgs/h
-    </p>
-    <ul>${lines}</ul>
-  `;
-  showConfirm(true);
-
-  $('acceptConfirm').onclick=async ()=>{
-    showConfirm(false);
-    toast('mut','Guardando…');
-    const rows=[];
-    selectedDays.forEach(d=>{
-      (hoursByDay[d]||new Set()).forEach(h=>{
-        rows.push({date:d,hour:h,name,email,channel,cap_msg:FIXED_CAP});
-      });
-    });
-    try{
-      const {error,status}=await sb
-        .from('bookings')
-        .upsert(rows,{onConflict:'date,hour,email',ignoreDuplicates:false,defaultToNull:true});
-      if(error){ return toast('err',`Error (${status||'—'}): ${error.message}`); }
-      toast('ok','Turnos guardados ✔️');
-      selectedDays.splice(0,selectedDays.length);
-      for(const k in hoursByDay) delete hoursByDay[k];
-      renderDays();
-      paintHours();
-      updateDayModeLabel();
-      loadMyShifts();
-    }catch(e){
-      toast('err','Excepción: '+(e?.message||String(e)));
-    }
-  };
-};
-
-$('cancelConfirm').onclick=()=>showConfirm(false);
-function showConfirm(f){ $('confirmModal').style.display=f?'flex':'none'; }
-
-async function loadMyShifts(){
-  const email=($('email').value||'').trim();
-  if(!email) return;
-  const d=new Date();
-  const ym=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
-  const {data,error}=await sb
-    .from('bookings')
-    .select('date,hour,channel,email')
-    .ilike('email',email)
-    .gte('date',ym+'-01')
-    .lte('date',ym+'-31')
-    .order('date')
-    .order('hour');
-
-  const tb=$('myTbl').querySelector('tbody');
-  tb.innerHTML='';
-  if(error){
-    tb.innerHTML=`<tr><td colspan="3">Error: ${error.message}</td></tr>`;
-    return;
-  }
-  (data||[]).forEach(r=>{
-    const tr=document.createElement('tr');
-    tr.innerHTML=`<td>${r.date}</td><td>${String(r.hour).padStart(2,'0')}:00</td><td>${r.channel||'—'}</td>`;
-    tb.appendChild(tr);
-  });
-}
-$('email').addEventListener('change', loadMyShifts);
-$('viewMyShifts').onclick = loadMyShifts;
-
-// --- Métricas MTD (adaptado a tu CSV real) ---
-function toNum(v){
-  const n=Number(String(v).replace(/[^0-9.-]/g,''));
-  return isFinite(n)?n:0;
-}
-async function fetchCSV(url){
-  const r=await fetch(url,{cache:"no-store"});
-  if(!r.ok) throw new Error("HTTP "+r.status);
-  const t=await r.text();
-  return new Promise((res,rej)=>Papa.parse(t,{header:true,skipEmptyLines:true,complete:x=>res(x.data),error:rej}));
-}
-function pct(x){return (x*100).toFixed(1)+'%';}
-function safeDiv(a,b){return b>0?a/b:0;}
-function findHeader(headers,needle){
-  const n=needle.toLowerCase();
-  return headers.find(h=>h.toLowerCase().includes(n)) || null;
-}
-
-$('mload').onclick=async ()=>{
-  const month=($('month').value||'').trim();
-  const email=($('memail').value||'').trim().toLowerCase();
-  if(!month||!email){
-    $('mmsg').className='msg err';
-    $('mmsg').textContent='Escribe mes y email.';
-    return;
-  }
-  $('mmsg').className='msg mut';
-  $('mmsg').textContent='Cargando…';
-  try{
-    const url=`${CSV_BASE_URL}/${month}.csv`;
-    const rows=await fetchCSV(url);
-    if(!rows.length) throw new Error('CSV sin filas');
-    const headers=Object.keys(rows[0]||{});
-
-    const emailCol=headers.find(h=>/email/i.test(h)) || headers[0];
-    const mine=rows.filter(r=>String(r[emailCol]||'').toLowerCase()===email);
-    if(!mine.length){
-      $('mmsg').className='msg err';
-      $('mmsg').textContent='No hay registros para ese email.';
-      return;
-    }
-
-    const colAssigned  = findHeader(headers,'conv. gestionadas');
-    const colClosed    = findHeader(headers,'conv. cerrad');
-    const colSent      = findHeader(headers,'usuarios a quien se envio link de pago');
-    const colTxn       = findHeader(headers,'txn atribuida');
-
-    const sum = (col)=> mine.reduce((a,r)=>a+toNum(r[col]??0),0);
-
-    const assigned = colAssigned ? sum(colAssigned) : 0;
-    const attended = assigned;
-    const closed   = colClosed ? sum(colClosed) : 0;
-    const sent     = colSent ? sum(colSent) : 0;
-    const paid     = colTxn ? sum(colTxn) : 0;
-    const sales    = paid;
-
-    $('k_assigned').textContent=assigned;
-    $('k_attended').textContent=attended;
-    $('k_closed').textContent=closed;
-    $('k_sent').textContent=sent;
-    $('k_paid').textContent=paid;
-    $('k_sales').textContent=sales;
-
-    $('k_cvr1').textContent=pct(safeDiv(sales,attended));
-    $('k_cvr2').textContent=pct(safeDiv(sales,sent));
-    $('k_cvr3').textContent=pct(safeDiv(sales,paid));
-
-    $('mmsg').className='msg ok';
-    $('mmsg').textContent='Listo ✔️';
-  }catch(e){
-    $('mmsg').className='msg err';
-    $('mmsg').textContent='Error: '+(e?.message||String(e));
-  }
-};
-</script>
-</body>
-</html>
 
