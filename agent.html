@@ -37,7 +37,7 @@ body{
   position:relative;
 }
 
-/* “luces” navideñas arriba */
+/* Luces navideñas */
 .lights{
   position:absolute;
   inset:0 0 auto 0;
@@ -216,7 +216,7 @@ h1 span.emoji{
   background:radial-gradient(circle at 0 0,rgba(248,250,252,.08),transparent 55%),
              #020617;
   font-size:13px;
-  transition:transform .12s ease-out,box-shadow .12s ease-out,border-color .12s ease-out,background .12s ease-out;
+  transition:transform .12s ease-out,box-shadow .12s ease-out,border-color .12s.ease-out,background .12s ease-out;
 }
 .hbtn:hover{
   transform:translateY(-1px);
@@ -348,7 +348,7 @@ th{background:#020617;text-align:left}
         Agenda tus turnos, enciende las luces del chat y deja que caigan los 💸.
       </div>
       <div class="sub">
-        Turnos disponibles de <b>lunes a viernes</b>, entre <b>9:00 a. m.</b> y <b>9:00 p. m.</b> (mín. 3h/día, máx. 3 días por registro).
+        Turnos disponibles de <b>domingo a domingo</b>, entre <b>9:00 a. m.</b> y <b>9:00 p. m.</b> (mín. 3h/día, máx. 3 días por registro).
       </div>
     </div>
     <div class="sub">Capacidad fija: <b>30</b> msgs/h</div>
@@ -370,7 +370,7 @@ th{background:#020617;text-align:left}
   <section class="card" id="shiftSec">
     <div class="grid5">
       <div>
-        <div class="lbl">Selecciona un día (lun–vie)</div>
+        <div class="lbl">Selecciona un día</div>
         <input class="inp" type="date" id="datePick">
       </div>
       <div style="align-self:end">
@@ -503,14 +503,6 @@ const hoursByDay={};
   setActiveDay(iso,true);
 })();
 
-// Solo lunes a viernes
-function isWeekday(dateStr){
-  if(!dateStr) return false;
-  const d=new Date(dateStr+'T00:00:00');
-  const day=d.getUTCDay(); // 0=domingo, 6=sábado
-  return day>=1 && day<=5;
-}
-
 function setActiveDay(date,ensureAdded=false){
   activeDay=date;
   $('activeDayLabel').textContent=activeDay?`(${activeDay})`:'';
@@ -521,10 +513,6 @@ function setActiveDay(date,ensureAdded=false){
 
 function addDay(date){
   if(!date) return;
-  if(!isWeekday(date)){
-    toast('err','Solo puedes agendar turnos de lunes a viernes.');
-    return;
-  }
   if(selectedDays.includes(date)) return setActiveDay(date);
   if(selectedDays.length>=3){ return toast('err','Máximo 3 días por registro.'); }
   selectedDays.push(date);
@@ -775,4 +763,3 @@ $('mload').onclick=async ()=>{
 </script>
 </body>
 </html>
-
